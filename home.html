@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 健康吃貨 | 首頁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF7F2;       
+            --text-main: #5C4D43;      
+            --border-color: #D5CACA;   
+            --card-blue-bg: #E1F5FE;
+            --card-blue-border: #B3E5FC;
+            --card-blue-text: #0288D1;
+            --card-pink-bg: #FCE4EC;
+            --card-pink-border: #F8BBD0;
+            --card-pink-text: #E91E63;
+            --card-orange-bg: #FFF3E0;
+            --card-orange-border: #FFE0B2;
+            --card-orange-text: #F57C00;
+            --card-green-bg: #E8F5E9;
+            --card-green-border: #C8E6C9;
+            --card-green-text: #388E3C;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 30px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sub-tag {
+            background-color: #FCE4EC;
+            color: #E91E63;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 58px;
+            height: 48px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #436B36;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .divider-dots {
+            border: none;
+            border-top: 2px dashed #D5CACA;
+            width: 120px;
+            margin: 15px auto 25px auto;
+        }
+
+        .main-btn {
+            background: linear-gradient(135deg, #FF80AB, #FF4081);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 12px 35px;
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            font-weight: bold;
+            color: #888;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- 四宮格選單網格 --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            text-decoration: none;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-divider {
+            width: 80%;
+            border: none;
+            border-top: 1px dashed #ccc;
+            margin: 8px 0;
+        }
+
+        .card-sub {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .badge-upcoming {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #D4A373;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        /* 各卡片配色屬性 */
+        .card-blue {
+            background-color: var(--card-blue-bg);
+            border-color: var(--card-blue-border);
+            color: var(--card-blue-text);
+        }
+        .card-pink {
+            background-color: var(--card-pink-bg);
+            border-color: var(--card-pink-border);
+            color: var(--card-pink-text);
+        }
+        .card-orange {
+            background-color: var(--card-orange-bg);
+            border-color: var(--card-orange-border);
+            color: var(--card-orange-text);
+        }
+        .card-green {
+            background-color: var(--card-green-bg);
+            border-color: var(--card-green-border);
+            color: var(--card-green-text);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="sub-tag">🌻 健康與美味 🌻</div>
+        <div class="brand-header">
+            <svg class="brand-logo" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+                <rect x="180" y="190" width="180" height="25" fill="#E8CD52"/>
+                <path d="M50 60 C 50 60, 200 60, 200 210 C 200 300, 50 340, 50 340 Z" fill="#429A4C"/>
+                <path d="M220 60 C 220 60, 370 60, 370 210 C 370 300, 220 340, 220 340 Z" fill="#429A4C"/>
+                <path d="M390 60 C 460 60, 500 100, 500 180 L 390 180 Z" fill="#429A4C"/>
+                <path d="M390 205 L 500 205 C 500 280, 460 340, 390 340 Z" fill="#E8CD52"/>
+            </svg>
+            <h1 class="brand-title">健康吃貨小幫手</h1>
+        </div>
+        <hr class="divider-dots">
+        <div class="section-subtitle">
+            <span>🌳 選擇功能，開始管理與盤點 🌳</span>
+        </div>
+    </div>
+
+    <!-- 四宮格區域 -->
+    <div class="grid-container">
+        <!-- 1. 第一個方塊導頁至現場庫存表 (預設連結設為 area1_Index1.html) -->
+        <a href="area1_Index1.html" class="card card-blue">
+            <div class="card-icon">✏️</div>
+            <div class="card-title">現場盤點庫存表</div>
+            <hr class="card-divider" style="border-color: var(--card-blue-border);">
+            <div class="card-sub">查看與盤點現場庫存 💕</div>
+        </a>
+
+        <!-- 2. 第二個方塊 -->
+        <a href="area1_Index2.html" class="card card-pink">
+            <div class="card-icon">📅</div>
+            <div class="card-title">每週與整月統計表</div>
+            <hr class="card-divider" style="border-color: var(--card-pink-border);">
+            <div class="card-sub">查閱週/月使用量 💕</div>
+        </a>
+
+        <!-- 3. 第三個方塊 -->
+        <a href="#" class="card card-orange">
+            <div class="card-icon">📖</div>
+            <div class="card-title">觀看食譜</div>
+            <hr class="card-divider" style="border-color: var(--card-orange-border);">
+            <div class="card-sub">瀏覽美味的食譜 💕</div>
+        </a>
+
+        <!-- 4. 第四個方塊 (標示即將推出) -->
+        <a href="#" class="card card-green">
+            <span class="badge-upcoming">即將推出</span>
+            <div class="card-icon">🍽️</div>
+            <div class="card-title">每日餐盤</div>
+            <hr class="card-divider" style="border-color: var(--card-green-border);">
+            <div class="card-sub">探索餐盤靈感 💕</div>
+        </a>
+    </div>
+
+</body>
+</html>

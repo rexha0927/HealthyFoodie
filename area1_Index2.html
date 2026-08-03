@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 健康吃貨 | 每週與整月統計表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF7F2;       
+            --text-main: #5C4D43;      
+            --border-color: #D5CACA;   
+            --table-header: #EAE3D9;   
+            --subtotal-bg: #F9E4B7;    
+            --focus-border: #8FA276;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif;
+            margin: 15px 10px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* --- 1. 最上方品牌置頂標題與 Logo --- */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .brand-logo {
+            width: 58px;
+            height: 48px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #436B36;
+            letter-spacing: 1px;
+            margin: 0;
+            line-height: 1.1;
+        }
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: #D4A338;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        /* --- 頁面二級標題容器 --- */
+        .title-container {
+            text-align: center;
+            margin-bottom: 12px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background-color: #fff;
+            border: 2px dashed var(--border-color);
+            border-radius: 30px;
+            box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
+        }
+
+        /* --- 左上角返回首頁按鈕 --- */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: #fff;
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 5;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* --- 月份選擇區塊 --- */
+        .month-picker-container {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .month-picker-container input[type="month"] {
+            font-family: inherit;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #fff;
+            color: var(--text-main);
+            outline: none;
+            font-weight: bold;
+        }
+
+        /* --- 表格容器 --- */
+        .table-container {
+            width: 100%;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto; 
+            overflow-x: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%; 
+            min-width: 600px;
+        }
+
+        th, td {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 4px;
+            text-align: center;
+            font-size: 14px;
+            background-color: #fff;
+            vertical-align: middle;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--table-header);
+            font-weight: 700;
+            height: 45px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+
+        .col-product {
+            text-align: left;
+            padding-left: 10px;
+            font-weight: bold;
+            width: 140px;
+        }
+        .prod-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .prod-icon { font-size: 16px; }
+        .prod-name { font-size: 14px; }
+
+        .col-total {
+            background-color: var(--subtotal-bg);
+            font-weight: bold;
+            color: #d35400;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 置頂品牌標頭 -->
+    <div class="brand-header">
+        <svg class="brand-logo" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="180" y="190" width="180" height="25" fill="#E8CD52"/>
+            <path d="M50 60 C 50 60, 200 60, 200 210 C 200 300, 50 340, 50 340 Z" fill="#429A4C"/>
+            <path d="M220 60 C 220 60, 370 60, 370 210 C 370 300, 220 340, 220 340 Z" fill="#429A4C"/>
+            <path d="M390 60 C 460 60, 500 100, 500 180 L 390 180 Z" fill="#429A4C"/>
+            <path d="M390 205 L 500 205 C 500 280, 460 340, 390 340 Z" fill="#E8CD52"/>
+        </svg>
+        <div class="brand-text-group">
+            <h1 class="brand-title">健康吃貨</h1>
+            <div class="brand-subtitle">HEALTHY FOODIE</div>
+        </div>
+    </div>
+
+    <!-- 2. 頁面副標題區塊 -->
+    <div class="title-container">
+        <a href="home.html" class="back-btn">🏠 首頁</a>
+        <h2>📊 每週與整月統計表 📈</h2>
+    </div>
+
+    <!-- 3. 月份選擇器 -->
+    <div class="month-picker-container">
+        <label for="select-month">📅 請選擇統計月份：</label>
+        <input type="month" id="select-month" onchange="renderStatsTable()">
+    </div>
+
+    <!-- 4. 庫存統計總表 -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="min-width: 130px;">品項(單位)</th>
+                    <th>第 1 週</th>
+                    <th>第 2 週</th>
+                    <th>第 3 週</th>
+                    <th>第 4 週</th>
+                    <th style="background-color: var(--subtotal-bg);">整月使用量</th>
+                </tr>
+            </thead>
+            <tbody id="stats-tbody">
+                <!-- 由 JavaScript 動態產生 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const products = [
+            { name: "薑黃優格雞腿", icon: "🍗" },
+            { name: "蒜香醬油雞腿", icon: "🍗" },
+            { name: "原味雞胸", icon: "🐔" },
+            { name: "羅勒雞胸", icon: "🌿" },
+            { name: "柚子雞胸", icon: "🍋" },
+            { name: "山葵雞腿", icon: "🌱" },
+            { name: "當歸雞胸", icon: "🏺" },
+            { name: "川味雞胸", icon: "🌶️" },
+            { name: "素宮保雞丁", icon: "🐤" },
+            { name: "素梅乾筍絲", icon: "🎍" },
+            { name: "赤玉牛肉煮", icon: "🍲" },
+            { name: "牛腱", icon: "🥩" },
+            { name: "雲耳露", icon: "🥤" },
+            { name: "花米", icon: "🥦" },
+            { name: "小清肉", icon: "🥓" },
+            { name: "洋蔥", icon: "🧅" },
+            { name: "薑汁醬", icon: "🫚" },
+            { name: "泰式醬", icon: "🍯" },
+            { name: "松阪豬湯", icon: "🍲" },
+            { name: "藥膳雞湯", icon: "🥣" },
+            { name: "松阪豬肉", icon: "🐷" },
+            { name: "蒜末", icon: "🧄" },
+            { name: "薑絲", icon: "🫚" },
+            { name: "胡蘿蔔絲", icon: "🥕" },
+            { name: "毛豆莢", icon: "🫛" },
+            { name: "雞米花", icon: "🍤" }
+        ];
+
+        // 預設將月份選單設為當月
+        const monthInput = document.getElementById('select-month');
+        const now = new Date();
+        const yearStr = now.getFullYear();
+        const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+        monthInput.value = `${yearStr}-${monthStr}`;
+
+        // 計算特定日期屬於該月的第幾週 (以週一為一週開始)
+        function getWeekOfMonth(date) {
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            let dayOfWeek = startOfMonth.getDay();
+            dayOfWeek = (dayOfWeek === 0) ? 7 : dayOfWeek; // 換算 1(一) ~ 7(日)
+            const dayOfMonth = date.getDate();
+            return Math.ceil((dayOfMonth + dayOfWeek - 1) / 7);
+        }
+
+        // 計算每日小計（對應 index3.html 算式：上午現場 + 上午拿取 + 下午拿取 - 隔日上午現場/週日剩餘）
+        function calculateDaySubtotal(data, dIdx, pIdx) {
+            const isSunday = (dIdx === 6);
+            const m_stock = parseInt(data[`m_stock_${dIdx}_${pIdx}`]) || 0;
+            const m_take = parseInt(data[`m_take_${dIdx}_${pIdx}`]) || 0;
+            const a_take = parseInt(data[`a_take_${dIdx}_${pIdx}`]) || 0;
+
+            let hasInput = (data[`m_stock_${dIdx}_${pIdx}`] !== undefined && data[`m_stock_${dIdx}_${pIdx}`] !== '') ||
+                           (data[`m_take_${dIdx}_${pIdx}`] !== undefined && data[`m_take_${dIdx}_${pIdx}`] !== '') ||
+                           (data[`a_take_${dIdx}_${pIdx}`] !== undefined && data[`a_take_${dIdx}_${pIdx}`] !== '');
+
+            if (isSunday && data[`remain_${dIdx}_${pIdx}`] !== undefined && data[`remain_${dIdx}_${pIdx}`] !== '') {
+                hasInput = true;
+            }
+
+            if (!hasInput) return 0;
+
+            let minusVal = 0;
+            if (!isSunday) {
+                minusVal = parseInt(data[`m_stock_${dIdx + 1}_${pIdx}`]) || 0;
+            } else {
+                minusVal = parseInt(data[`remain_${dIdx}_${pIdx}`]) || 0;
+            }
+
+            return m_stock + m_take + a_take - minusVal;
+        }
+
+        // 從 localStorage 撈取資料並計算第 1~4 週的「週小計」總和
+        function getWeeklySubtotalsFromStorage(selectedYearMonth) {
+            const weeklyTotals = Array(products.length).fill(0).map(() => [0, 0, 0, 0]);
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                // key 格式假設為 index3 產生的 "inventory_YYYY-MM-DD"
+                if (key.startsWith("inventory_")) {
+                    const dateStr = key.replace("inventory_", "");
+                    if (dateStr.startsWith(selectedYearMonth)) {
+                        const dateObj = new Date(dateStr);
+                        const weekNum = getWeekOfMonth(dateObj); // 1~4
+
+                        if (weekNum >= 1 && weekNum <= 4) {
+                            try {
+                                const dayData = JSON.parse(localStorage.getItem(key));
+                                // 判斷該日期為週幾 (0:日 ~ 6:六，轉換為 index 0~6)
+                                const dayOfWeek = dateObj.getDay();
+                                const dIdx = (dayOfWeek === 0) ? 6 : dayOfWeek - 1;
+
+                                products.forEach((_, pIdx) => {
+                                    const subtotal = calculateDaySubtotal(dayData, dIdx, pIdx);
+                                    weeklyTotals[pIdx][weekNum - 1] += subtotal;
+                                });
+                            } catch (e) {
+                                console.error("解析 LocalStorage 失敗", e);
+                            }
+                        }
+                    }
+                }
+            }
+            return weeklyTotals;
+        }
+
+        function renderStatsTable() {
+            const tbody = document.getElementById('stats-tbody');
+            const selectedYM = monthInput.value; 
+            const weeklyTotals = getWeeklySubtotalsFromStorage(selectedYM);
+
+            let html = '';
+
+            products.forEach((p, pIdx) => {
+                const unit = (p.name === '雲耳露') ? '瓶' : '包';
+                
+                const w1 = weeklyTotals[pIdx][0];
+                const w2 = weeklyTotals[pIdx][1];
+                const w3 = weeklyTotals[pIdx][2];
+                const w4 = weeklyTotals[pIdx][3];
+                const monthTotal = w1 + w2 + w3 + w4;
+
+                html += `
+                    <tr>
+                        <td class="col-product">
+                            <div class="prod-info">
+                                <span class="prod-icon">${p.icon}</span>
+                                <span class="prod-name">${p.name} 
+                                    <span style="font-weight:normal;">(${unit})</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>${w1}</td>
+                        <td>${w2}</td>
+                        <td>${w3}</td>
+                        <td>${w4}</td>
+                        <td class="col-total">${monthTotal}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // 頁面初次載入執行
+        renderStatsTable();
+    </script>
+</body>
+</html>
