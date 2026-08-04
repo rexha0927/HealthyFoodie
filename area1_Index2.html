@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌿 健康吃貨 | 每週與整月統計表</title>
+    <title>🌿 健康吃貨 | 各週與整月統計表</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -70,7 +70,7 @@
             min-height: 42px;
         }
 
-        h2 {
+        h3 {
             font-size: 18px;
             font-weight: 700;
             margin: 0;
@@ -80,7 +80,7 @@
             padding: 6px 16px;
             background-color: #fff;
             border: 2px dashed var(--border-color);
-            border-radius: 30px;
+            border-radius: 30px;下午 02:12 2026/8/4
             box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
         }
 
@@ -90,7 +90,7 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border: 1px solid var(--border-color);
             border-radius: 20px;
             background-color: #fff;
@@ -208,8 +208,8 @@
 
     <!-- 2. 頁面副標題區塊 -->
     <div class="title-container">
-        <a href="home.html" class="back-btn">🏠 首頁</a>
-        <h2>📊 每週與整月統計表 📈</h2>
+        <a href="home.html" class="back-btn">🏠首頁</a>
+        <h3>📊 各週與整月統計表</h3>
     </div>
 
     <!-- 3. 月份選擇器 -->
@@ -352,7 +352,7 @@
             let html = '';
 
             products.forEach((p, pIdx) => {
-                const unit = (p.name === '雲耳露') ? '瓶' : '包';
+                const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉') ? '片' : '包';
                 
                 const w1 = weeklyTotals[pIdx][0];
                 const w2 = weeklyTotals[pIdx][1];
