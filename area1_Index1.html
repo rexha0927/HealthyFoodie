@@ -328,7 +328,7 @@
     <!-- 頁面副標題區塊 -->
     <div class="title-container">
         <button class="back-btn" id="back-btn" onclick="showDatePickerView()">📅 日曆</button>
-        <h2>🥗 現場盤點庫存表 🍚</h2>
+        <h2>🥗 現場盤點庫存表</h2>
     </div>
 
     <!-- 1. 日曆選擇視圖 -->
@@ -464,10 +464,10 @@
                         <thead>
                             <tr>
                                 <th>品項(單位)</th>
-                                <th>上午<span class="header-sub">現場</span></th>
-                                <th>上午<span class="header-sub">拿取</span></th>
-                                <th>下午<span class="header-sub">現場</span></th>
-                                <th>下午<span class="header-sub">拿取</span></th>
+                                <th style="color:#469f50">上午<span class="header-sub">現場</span></th>
+                                <th style="color:#469f50">上午<span class="header-sub">拿取</span></th>
+                                <th style="color:#6095d4">下午<span class="header-sub">現場</span></th>
+                                <th style="color:#6095d4">下午<span class="header-sub">拿取</span></th>
                                 ${isSunday ? '<th>剩餘量</th>' : ''}
                                 <th style="background-color: var(--subtotal-bg);">小計</th>
                             </tr>
@@ -481,7 +481,9 @@
                                 <div class="prod-info">
                                     <span class="prod-icon">${p.icon}</span>
                                     <span class="prod-name">${p.name}
-					<span style="font-weight:normal;">(${p.name == '雲耳露' ? '瓶' : '包'})</span>
+					<span style="font-weight:normal;">
+					    (${p.name == '雲耳露' ? '瓶' : p.name == '松阪豬肉' ? '片' : '包'})
+					</span>
 				    </span>
 
                                 </div>
