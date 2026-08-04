@@ -80,7 +80,7 @@
             padding: 6px 16px;
             background-color: #fff;
             border: 2px dashed var(--border-color);
-            border-radius: 30px;下午 02:12 2026/8/4
+            border-radius: 30px;
             box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
         }
 
@@ -155,6 +155,7 @@
             font-size: 14px;
             background-color: #fff;
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         thead th {
@@ -167,12 +168,22 @@
             box-shadow: 0 2px 3px rgba(0,0,0,0.05);
         }
 
-        .col-product {
+        /* --- 第一欄左側固定樣式 --- */
+        .col-sticky-left {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background-color: #fff;
             text-align: left;
             padding-left: 10px;
             font-weight: bold;
-            width: 140px;
+            width: 120px;
         }
+        thead th.col-sticky-left {
+            z-index: 20;
+            background-color: var(--table-header);
+        }
+
         .prod-info {
             display: flex;
             align-items: center;
@@ -223,7 +234,7 @@
         <table>
             <thead>
                 <tr>
-                    <th style="min-width: 130px;">品項(單位)</th>
+                    <th class="col-sticky-left">品項(單位)</th>
                     <th>第 1 週</th>
                     <th>第 2 週</th>
                     <th>第 3 週</th>
@@ -283,7 +294,7 @@
             return Math.ceil((dayOfMonth + dayOfWeek - 1) / 7);
         }
 
-        // 計算每日小計（對應 index3.html 算式：上午現場 + 上午拿取 + 下午拿取 - 隔日上午現場/週日剩餘）
+        // 計算每日小計（對應算式：上午現場 + 上午拿取 + 下午拿取 - 隔日上午現場/週日剩餘）
         function calculateDaySubtotal(data, dIdx, pIdx) {
             const isSunday = (dIdx === 6);
             const m_stock = parseInt(data[`m_stock_${dIdx}_${pIdx}`]) || 0;
@@ -316,7 +327,6 @@
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                // key 格式假設為 index3 產生的 "inventory_YYYY-MM-DD"
                 if (key.startsWith("inventory_")) {
                     const dateStr = key.replace("inventory_", "");
                     if (dateStr.startsWith(selectedYearMonth)) {
@@ -326,7 +336,6 @@
                         if (weekNum >= 1 && weekNum <= 4) {
                             try {
                                 const dayData = JSON.parse(localStorage.getItem(key));
-                                // 判斷該日期為週幾 (0:日 ~ 6:六，轉換為 index 0~6)
                                 const dayOfWeek = dateObj.getDay();
                                 const dIdx = (dayOfWeek === 0) ? 6 : dayOfWeek - 1;
 
@@ -362,7 +371,7 @@
 
                 html += `
                     <tr>
-                        <td class="col-product">
+                        <td class="col-sticky-left">
                             <div class="prod-info">
                                 <span class="prod-icon">${p.icon}</span>
                                 <span class="prod-name">${p.name} 
