@@ -214,13 +214,13 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
-        /* --- 表格容器 --- */
+        /* --- 表格容器（支援雙向捲軸） --- */
         .day-table-container {
             display: none; 
             width: 100%;
             max-height: calc(100vh - 280px);
             overflow-y: auto; 
-            overflow-x: hidden; 
+            overflow-x: auto; /* 允許橫向滑動 */
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -240,6 +240,7 @@
             border-collapse: separate;
             border-spacing: 0;
             width: 100%; 
+            min-width: 480px; /* 保證手機端能觸發橫向滾動 */
         }
 
         th, td {
@@ -250,6 +251,7 @@
             font-size: 14px;
             background-color: #fff;
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         thead th {
@@ -262,12 +264,22 @@
             box-shadow: 0 2px 3px rgba(0,0,0,0.05);
         }
 
-        .col-product {
+        /* --- 第一欄左側固定樣式 --- */
+        .col-sticky-left {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background-color: #fff;
             text-align: left;
             padding-left: 10px;
             font-weight: bold;
-            //width: 120px;
+            width: 120px;
         }
+        thead th.col-sticky-left {
+            z-index: 20;
+            background-color: var(--table-header);
+        }
+
         .prod-info {
             display: flex;
             align-items: center;
@@ -277,7 +289,7 @@
         .prod-name { font-size: 14px; }
 
         input[type=number] {
-            //width: 40px;
+            width: 60px;
             height: 35px;
             border: 1px solid #eee;
             text-align: center;
@@ -306,7 +318,8 @@
             display: block;
             margin-top: 2px;
         }
-	/* 標題配色 */
+
+        /* 標題配色 */
         .th-in { background-color: #e8f8f5; color: #16a085; }
         .th-out { background-color: #fef9e7; color: #d35400; }
 
@@ -461,31 +474,27 @@
                 btn.onclick = () => switchTab(dIdx, btn);
                 tabsContainer.appendChild(btn);
 
-                const isSunday = (dIdx === 6);
-
                 let html = `<div id="table_day_${dIdx}" class="day-table-container ${isActive ? 'active' : ''}">
                     <table>
                         <thead>
                             <tr>
-                                <th>品項(單位)</th>
-				<th class="th-in">入庫</th>
-				<th class="th-out">出庫</th>
+                                <th class="col-sticky-left">品項(單位)</th>
+                                <th class="th-in">入庫</th>
+                                <th class="th-out">出庫</th>
                             </tr>
                         </thead>
                         <tbody>`;
                 
                 products.forEach((p, pIdx) => {
+                    const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉' ? '片' : '包');
                     html += `
                         <tr>
-                            <td class="col-product">
+                            <td class="col-sticky-left">
                                 <div class="prod-info">
                                     <span class="prod-icon">${p.icon}</span>
                                     <span class="prod-name">${p.name}
-					<span style="font-weight:normal;">
-					    (${p.name == '雲耳露' ? '瓶' : p.name == '松阪豬肉' ? '片' : '包'})
-					</span>
-				    </span>
-
+                                        <span style="font-weight:normal;">(${unit})</span>
+                                    </span>
                                 </div>
                             </td>
                             <td><input type="number" id="in_${dIdx}_${pIdx}"></td>
@@ -516,9 +525,6 @@
                 }
             });
         }
-        
-        // 全域即時連動算數事件監聽 (同時支援 input 與 change 事件)
-        const wrapper = document.getElementById('all-tables-wrapper');
     </script>
 </body>
 </html>
