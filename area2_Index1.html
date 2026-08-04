@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 健康吃貨 | 出入庫記錄表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF7F2;       
+            --text-main: #5C4D43;      
+            --border-color: #D5CACA;   
+            --table-header: #EAE3D9;   
+            --focus-bg: #F1F6E9;       
+            --focus-border: #8FA276;   
+            --subtotal-bg: #F9E4B7;    
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif;
+            margin: 15px 10px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* --- 1. 最上方品牌置頂標題與 Logo（橫向排列：左圖右字） --- */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .brand-logo {
+            width: 58px;
+            height: 48px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #436B36;
+            letter-spacing: 1px;
+            margin: 0;
+            line-height: 1.1;
+        }
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: #D4A338;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        /* --- 頁面二級標題容器 --- */
+        .title-container {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background-color: #fff;
+            border: 2px dashed var(--border-color);
+            border-radius: 30px;
+            box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
+        }
+
+        /* --- 左上角返回日曆按鈕 --- */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: #fff;
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none;
+            align-items: center;
+            gap: 4px;
+            z-index: 5;
+        }
+        .back-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* --- 日曆選擇視圖 --- */
+        .date-picker-view {
+            max-width: 400px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .date-picker-view label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .date-picker-view input[type=date] {
+            font-family: inherit;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            color: var(--text-main);
+            background-color: #FAF7F2;
+            width: 80%;
+            max-width: 220px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .date-picker-view button {
+            padding: 10px 24px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #8FA276;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .date-picker-view button:hover {
+            background-color: #7a8c64;
+        }
+
+        /* --- 當週資訊列 --- */
+        .week-info {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #7a6b60;
+            margin-bottom: 10px;
+        }
+
+        /* --- 週主體內容 --- */
+        .week-content {
+            display: none;
+        }
+
+        /* --- 星期切換按鈕區 --- */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+            scrollbar-width: none; 
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: bold;
+            color: var(--text-main);
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.2;
+        }
+        .tab-btn .tab-date {
+            font-size: 11px;
+            font-weight: normal;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+        .tab-btn.active {
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* --- 表格容器 --- */
+        .day-table-container {
+            display: none; 
+            width: 100%;
+            max-height: calc(100vh - 280px);
+            overflow-y: auto; 
+            overflow-x: hidden; 
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+        .day-table-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%; 
+        }
+
+        th, td {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 4px;
+            text-align: center;
+            font-size: 14px;
+            background-color: #fff;
+            vertical-align: middle;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--table-header);
+            font-weight: 700;
+            height: 45px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+
+        .col-product {
+            text-align: left;
+            padding-left: 10px;
+            font-weight: bold;
+            //width: 120px;
+        }
+        .prod-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .prod-icon { font-size: 16px; }
+        .prod-name { font-size: 14px; }
+
+        input[type=number] {
+            //width: 40px;
+            height: 35px;
+            border: 1px solid #eee;
+            text-align: center;
+            font-size: 16px; 
+            color: var(--text-main);
+            background-color: transparent;
+            border-radius: 6px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+        input[type=number]:focus {
+            outline: none;
+            border: 1px solid var(--focus-border);
+            background-color: var(--focus-bg);
+            box-shadow: 0 0 5px rgba(143, 162, 118, 0.3);
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .header-sub {
+            font-size: 11px;
+            color: #777;
+            display: block;
+            margin-top: 2px;
+        }
+	/* 標題配色 */
+        .th-in { background-color: #e8f8f5; color: #16a085; }
+        .th-out { background-color: #fef9e7; color: #d35400; }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. 最上方置頂品牌標頭 -->
+    <div class="brand-header">
+        <svg class="brand-logo" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="180" y="190" width="180" height="25" fill="#E8CD52"/>
+            <path d="M50 60 C 50 60, 200 60, 200 210 C 200 300, 50 340, 50 340 Z" fill="#429A4C"/>
+            <path d="M220 60 C 220 60, 370 60, 370 210 C 370 300, 220 340, 220 340 Z" fill="#429A4C"/>
+            <path d="M390 60 C 460 60, 500 100, 500 180 L 390 180 Z" fill="#429A4C"/>
+            <path d="M390 205 L 500 205 C 500 280, 460 340, 390 340 Z" fill="#E8CD52"/>
+        </svg>
+        <div class="brand-text-group">
+            <h1 class="brand-title">健康吃貨</h1>
+            <div class="brand-subtitle">HEALTHY FOODIE</div>
+        </div>
+    </div>
+
+    <!-- 頁面副標題區塊 -->
+    <div class="title-container">
+        <button class="back-btn" id="back-btn" onclick="showDatePickerView()">📅 日曆</button>
+        <h2>📦 出入庫記錄表</h2>
+    </div>
+
+    <!-- 1. 日曆選擇視圖 -->
+    <div class="date-picker-view" id="date-picker-view">
+        <label for="select-date">📅 請選擇欲紀錄的日期：</label>
+        <input type="date" id="select-date">
+        <br>
+        <button onclick="confirmDateSelection()">查看當週庫存表</button>
+    </div>
+
+    <!-- 2. 當週視圖 -->
+    <div class="week-content" id="week-content">
+        <div class="week-info" id="week-info-text"></div>
+        <div class="tabs-container" id="tabs-container"></div>
+        <div id="all-tables-wrapper"></div>
+    </div>
+
+    <script>
+        const products = [
+            { name: "薑黃優格雞腿", icon: "🍗" },
+            { name: "蒜香醬油雞腿", icon: "🍗" },
+            { name: "原味雞胸", icon: "🐔" },
+            { name: "羅勒雞胸", icon: "🌿" },
+            { name: "柚子雞胸", icon: "🍋" },
+            { name: "山葵雞腿", icon: "🌱" },
+            { name: "當歸雞胸", icon: "🏺" },
+            { name: "川味雞胸", icon: "🌶️" },
+            { name: "素宮保雞丁", icon: "🐤" },
+            { name: "素梅乾筍絲", icon: "🎍" },
+            { name: "赤玉牛肉煮", icon: "🍲" },
+            { name: "牛腱", icon: "🥩" },
+            { name: "雲耳露", icon: "🥤" },
+            { name: "花米", icon: "🥦" },
+            { name: "小清肉", icon: "🥓" },
+            { name: "洋蔥", icon: "🧅" },
+            { name: "薑汁醬", icon: "🫚" },
+            { name: "泰式醬", icon: "🍯" },
+            { name: "松阪豬湯", icon: "🍲" },
+            { name: "藥膳雞湯", icon: "🥣" },
+            { name: "松阪豬肉", icon: "🐷" },
+            { name: "蒜末", icon: "🧄" },
+            { name: "薑絲", icon: "🫚" },
+            { name: "胡蘿蔔絲", icon: "🥕" },
+            { name: "毛豆莢", icon: "🫛" },
+            { name: "雞米花", icon: "🍤" }
+        ];
+
+        const days = [
+            { name: "(一)", color: "#E09C9C" }, 
+            { name: "(二)", color: "#DAB763" }, 
+            { name: "(三)", color: "#8BABD0" }, 
+            { name: "(四)", color: "#D8A375" }, 
+            { name: "(五)", color: "#95AD8E" }, 
+            { name: "(六)", color: "#A897A6" }, 
+            { name: "(日)", color: "#8BABD0" }  
+        ];
+
+        const dateInput = document.getElementById('select-date');
+        const todayStr = new Date().toISOString().split('T')[0];
+        dateInput.value = todayStr;
+
+        function getWeekDates(selectedDateStr) {
+            const targetDate = new Date(selectedDateStr);
+            const dayOfWeek = targetDate.getDay();
+            const diffToMonday = (dayOfWeek === 0 ? 7 : dayOfWeek) - 1;
+            
+            const monday = new Date(targetDate);
+            monday.setDate(targetDate.getDate() - diffToMonday);
+
+            const weekDates = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                weekDates.push(d);
+            }
+            return weekDates;
+        }
+
+        function formatDateMMDD(d) {
+            return `${d.getMonth() + 1}/${d.getDate()}`;
+        }
+
+        function confirmDateSelection() {
+            const val = dateInput.value;
+            if (!val) {
+                alert("請先選擇日期！");
+                return;
+            }
+
+            const weekDates = getWeekDates(val);
+            const selectedDate = new Date(val);
+            const selectedDayIdx = (selectedDate.getDay() === 0) ? 6 : selectedDate.getDay() - 1;
+
+            const monStr = `${weekDates[0].getFullYear()}/${weekDates[0].getMonth()+1}/${weekDates[0].getDate()}`;
+            const sunStr = `${weekDates[6].getFullYear()}/${weekDates[6].getMonth()+1}/${weekDates[6].getDate()}`;
+            document.getElementById('week-info-text').innerText = `🗓️ 當週區間：${monStr} ～ ${sunStr}`;
+
+            renderWeekTables(weekDates, selectedDayIdx);
+
+            document.getElementById('date-picker-view').style.display = 'none';
+            document.getElementById('week-content').style.display = 'block';
+            document.getElementById('back-btn').style.display = 'inline-flex';
+        }
+
+        function showDatePickerView() {
+            document.getElementById('date-picker-view').style.display = 'block';
+            document.getElementById('week-content').style.display = 'none';
+            document.getElementById('back-btn').style.display = 'none';
+        }
+
+        function renderWeekTables(weekDates, activeIdx) {
+            const tabsContainer = document.getElementById('tabs-container');
+            const tablesWrapper = document.getElementById('all-tables-wrapper');
+
+            tabsContainer.innerHTML = '';
+            tablesWrapper.innerHTML = '';
+
+            days.forEach((day, dIdx) => {
+                const dateStr = formatDateMMDD(weekDates[dIdx]);
+                const isActive = (dIdx === activeIdx);
+
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${isActive ? 'active' : ''}`;
+                btn.innerHTML = `<span>${day.name}</span><span class="tab-date">${dateStr}</span>`;
+                if(isActive) btn.style.backgroundColor = day.color; 
+                btn.onclick = () => switchTab(dIdx, btn);
+                tabsContainer.appendChild(btn);
+
+                const isSunday = (dIdx === 6);
+
+                let html = `<div id="table_day_${dIdx}" class="day-table-container ${isActive ? 'active' : ''}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>品項(單位)</th>
+				<th class="th-in">入庫</th>
+				<th class="th-out">出庫</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                
+                products.forEach((p, pIdx) => {
+                    html += `
+                        <tr>
+                            <td class="col-product">
+                                <div class="prod-info">
+                                    <span class="prod-icon">${p.icon}</span>
+                                    <span class="prod-name">${p.name}
+					<span style="font-weight:normal;">
+					    (${p.name == '雲耳露' ? '瓶' : p.name == '松阪豬肉' ? '片' : '包'})
+					</span>
+				    </span>
+
+                                </div>
+                            </td>
+                            <td><input type="number" id="in_${dIdx}_${pIdx}"></td>
+                            <td><input type="number" id="out_${dIdx}_${pIdx}"></td>
+                        </tr>`;
+                });
+
+                html += `</tbody></table></div>`;
+                tablesWrapper.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function switchTab(activeIndex, activeBtn) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach((btn) => {
+                btn.classList.remove('active');
+                btn.style.backgroundColor = '#fff'; 
+            });
+            activeBtn.classList.add('active');
+            activeBtn.style.backgroundColor = days[activeIndex].color;
+
+            const tables = document.querySelectorAll('.day-table-container');
+            tables.forEach((table, index) => {
+                if (index === activeIndex) {
+                    table.classList.add('active');
+                } else {
+                    table.classList.remove('active');
+                }
+            });
+        }
+        
+        // 全域即時連動算數事件監聽 (同時支援 input 與 change 事件)
+        const wrapper = document.getElementById('all-tables-wrapper');
+    </script>
+</body>
+</html>

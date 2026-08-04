@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 健康吃貨 | 出入庫統計表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF7F2;       
+            --text-main: #5C4D43;      
+            --border-color: #D5CACA;   
+            --table-header: #EAE3D9;   
+            --focus-bg: #F1F6E9;       
+            --focus-border: #8FA276;   
+            --subtotal-bg: #F9E4B7;    
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif;
+            margin: 15px 10px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* --- 1. 置頂品牌標頭 --- */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .brand-logo {
+            width: 58px;
+            height: 48px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #436B36;
+            letter-spacing: 1px;
+            margin: 0;
+            line-height: 1.1;
+        }
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: #D4A338;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        /* --- 頁面二級標題容器 --- */
+        .title-container {
+            text-align: center;
+            margin-bottom: 12px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background-color: #fff;
+            border: 2px dashed var(--border-color);
+            border-radius: 30px;
+            box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
+        }
+
+        /* --- 左上角返回首頁按鈕 --- */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: #fff;
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 5;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* --- 月份選擇區塊 --- */
+        .month-picker-container {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .month-picker-container input[type="month"] {
+            font-family: inherit;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #fff;
+            color: var(--text-main);
+            outline: none;
+            font-weight: bold;
+        }
+
+        /* --- 表格容器 --- */
+        .table-container {
+            width: 100%;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto; 
+            overflow-x: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%; 
+        }
+
+        th, td {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 6px;
+            text-align: center;
+            font-size: 13.5px;
+            background-color: #fff;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* Excel 風格凍結表頭與第一欄 */
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--table-header);
+            font-weight: 700;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+
+        /* 首欄品項名稱置左且固定 */
+        .col-sticky-left {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background-color: #fff;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: bold;
+            min-width: 150px;
+        }
+        thead th.col-sticky-left {
+            z-index: 20;
+            background-color: var(--table-header);
+        }
+
+        .prod-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .prod-icon { font-size: 16px; }
+
+        input[type=number] {
+            width: 55px;
+            height: 32px;
+            border: 1px solid #eee;
+            text-align: center;
+            font-size: 14px; 
+            color: var(--text-main);
+            background-color: transparent;
+            border-radius: 6px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+        input[type=number]:focus {
+            outline: none;
+            border: 1px solid var(--focus-border);
+            background-color: var(--focus-bg);
+            box-shadow: 0 0 5px rgba(143, 162, 118, 0.3);
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        /* 唯讀輸入框樣式 */
+        input[readonly] {
+            background-color: #f0f0f0;
+            border-color: #e0e0e0;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* 狀態標籤風格 */
+        .status-normal {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .status-warning {
+            color: #e74c3c;
+            font-weight: bold;
+            background-color: #fadbd8;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .bg-calc { background-color: #fcf8e3; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 置頂品牌標頭 -->
+    <div class="brand-header">
+        <svg class="brand-logo" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="180" y="190" width="180" height="25" fill="#E8CD52"/>
+            <path d="M50 60 C 50 60, 200 60, 200 210 C 200 300, 50 340, 50 340 Z" fill="#429A4C"/>
+            <path d="M220 60 C 220 60, 370 60, 370 210 C 370 300, 220 340, 220 340 Z" fill="#429A4C"/>
+            <path d="M390 60 C 460 60, 500 100, 500 180 L 390 180 Z" fill="#429A4C"/>
+            <path d="M390 205 L 500 205 C 500 280, 460 340, 390 340 Z" fill="#E8CD52"/>
+        </svg>
+        <div class="brand-text-group">
+            <h1 class="brand-title">健康吃貨</h1>
+            <div class="brand-subtitle">HEALTHY FOODIE</div>
+        </div>
+    </div>
+
+    <!-- 2. 頁面副標題區塊 -->
+    <div class="title-container">
+        <a href="home.html" class="back-btn">🏠 首頁</a>
+        <h2 id="page-title">📊 出入庫統計表</h2>
+    </div>
+
+    <!-- 3. 月份選擇器 -->
+    <div class="month-picker-container">
+        <label for="select-month">📅 請選擇統計月份：</label>
+        <input type="month" id="select-month" onchange="renderTable()">
+    </div>
+
+    <!-- 4. 出入庫統計主表格 -->
+    <div class="table-container">
+        <table id="stats-table">
+            <thead>
+                <tr>
+                    <th class="col-sticky-left">品項(單位)</th>
+                    <th>上月庫存</th>
+                    <th>入庫數量</th>
+                    <th>出庫數量</th>
+                    <th class="bg-calc">剩餘數量</th>
+                    <th>安全庫存</th>
+                    <th>庫存狀態</th>
+                </tr>
+            </thead>
+            <tbody id="stats-tbody">
+                <!-- 由 JavaScript 動態生成數據列 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const products = [
+            { name: "薑黃優格雞腿", icon: "🍗" },
+            { name: "蒜香醬油雞腿", icon: "🍗" },
+            { name: "原味雞胸", icon: "🐔" },
+            { name: "羅勒雞胸", icon: "🌿" },
+            { name: "柚子雞胸", icon: "🍋" },
+            { name: "山葵雞腿", icon: "🌱" },
+            { name: "當歸雞胸", icon: "🏺" },
+            { name: "川味雞胸", icon: "🌶️" },
+            { name: "素宮保雞丁", icon: "🐤" },
+            { name: "素梅乾筍絲", icon: "🎍" },
+            { name: "赤玉牛肉煮", icon: "🍲" },
+            { name: "牛腱", icon: "🥩" },
+            { name: "雲耳露", icon: "🥤" },
+            { name: "花米", icon: "🥦" },
+            { name: "小清肉", icon: "🥓" },
+            { name: "洋蔥", icon: "🧅" },
+            { name: "薑汁醬", icon: "🫚" },
+            { name: "泰式醬", icon: "🍯" },
+            { name: "松阪豬湯", icon: "🍲" },
+            { name: "藥膳雞湯", icon: "🥣" },
+            { name: "松阪豬肉", icon: "🐷" },
+            { name: "蒜末", icon: "🧄" },
+            { name: "薑絲", icon: "🫚" },
+            { name: "胡蘿蔔絲", icon: "🥕" },
+            { name: "毛豆莢", icon: "🫛" },
+            { name: "雞米花", icon: "🍤" }
+        ];
+
+        // 預設月份選單設為當月
+        const monthInput = document.getElementById('select-month');
+        const now = new Date();
+        const yearStr = now.getFullYear();
+        const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+        monthInput.value = `${yearStr}-${monthStr}`;
+
+        function updateTitle() {
+            const ym = monthInput.value.split('-');
+            if (ym.length === 2) {
+                document.getElementById('page-title').innerText = `📊 出入庫統計表`;
+            }
+        }
+
+        // 從 LocalStorage 或全局區域取得當月 area2_Index1 的每日紀錄並做總和計算
+        function getMonthlySumFromIndex1(selectedMonth) {
+            let monthlyInSum = new Array(products.length).fill(0);
+            let monthlyOutSum = new Array(products.length).fill(0);
+
+            // 嘗試讀取 area2_Index1 儲存的紀錄 (若有整合資料庫或 localStorage)
+            const recordData = JSON.parse(localStorage.getItem('area2_Index1_records') || '{}');
+
+            // 遍歷所有紀錄日期，若符合選取月份則累加
+            Object.keys(recordData).forEach(dateKey => {
+                if (dateKey.startsWith(selectedMonth)) {
+                    const dayData = recordData[dateKey]; // [{in: 0, out: 0}, ...]
+                    if (Array.isArray(dayData)) {
+                        dayData.forEach((item, pIdx) => {
+                            if (pIdx < products.length) {
+                                monthlyInSum[pIdx] += (parseInt(item.in) || 0);
+                                monthlyOutSum[pIdx] += (parseInt(item.out) || 0);
+                            }
+                        });
+                    }
+                }
+            });
+
+            return { monthlyInSum, monthlyOutSum };
+        }
+
+        function renderTable() {
+            updateTitle();
+            const selectedMonth = monthInput.value;
+            const { monthlyInSum, monthlyOutSum } = getMonthlySumFromIndex1(selectedMonth);
+
+            const tbody = document.getElementById('stats-tbody');
+            let tbodyHtml = '';
+
+            products.forEach((p, pIdx) => {
+                const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉' ? '片' : '包');
+                const safeStock = p.safe || 10;
+                const inTotal = monthlyInSum[pIdx];
+                const outTotal = monthlyOutSum[pIdx];
+
+                tbodyHtml += `<tr>
+                    <td class="col-sticky-left">
+                        <div class="prod-info">
+                            <span class="prod-icon">${p.icon}</span>
+                            <span>${p.name}
+                                <span style="font-weight:normal;">(${unit})</span>
+                            </span>
+                        </div>
+                    </td>
+                    <td><input type="number" id="prev_stock_${pIdx}" value="100" oninput="calculateRow(${pIdx})"></td>
+                    <td><input type="number" id="in_stock_${pIdx}" value="${inTotal}" readonly></td>
+                    <td><input type="number" id="out_stock_${pIdx}" value="${outTotal}" readonly></td>
+                    <td class="bg-calc" id="remain_stock_${pIdx}">100</td>
+                    <td><input type="number" id="safe_stock_${pIdx}" value="${safeStock}" oninput="calculateRow(${pIdx})"></td>
+                    <td id="status_${pIdx}" class="status-normal">✅ 正常</td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = tbodyHtml;
+
+            // 初始計算所有列的剩餘數量與狀態
+            products.forEach((_, pIdx) => calculateRow(pIdx));
+        }
+
+        // 單行計算邏輯 (上月庫存 + 當月總入庫 - 當月總出庫 = 剩餘數量)
+        function calculateRow(pIdx) {
+            const prevStock = parseInt(document.getElementById(`prev_stock_${pIdx}`).value) || 0;
+            const inStock = parseInt(document.getElementById(`in_stock_${pIdx}`).value) || 0;
+            const outStock = parseInt(document.getElementById(`out_stock_${pIdx}`).value) || 0;
+
+            const remain = prevStock + inStock - outStock;
+            const safeStock = parseInt(document.getElementById(`safe_stock_${pIdx}`).value) || 0;
+
+            // 更新剩餘數量
+            document.getElementById(`remain_stock_${pIdx}`).innerText = remain;
+
+            // 安全庫存狀態判定
+            const statusTd = document.getElementById(`status_${pIdx}`);
+            if (remain < safeStock) {
+                statusTd.className = 'status-warning';
+                statusTd.innerText = '⚠️ 補貨';
+            } else {
+                statusTd.className = 'status-normal';
+                statusTd.innerText = '✅ 正常';
+            }
+        }
+
+        // 首次初始化
+        renderTable();
+    </script>
+</body>
+</html>
