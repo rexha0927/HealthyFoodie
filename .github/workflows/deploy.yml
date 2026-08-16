@@ -19,9 +19,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject API URL
+        env:
+          GAS_URL: ${{ secrets.GAS_WEB_APP_URL }}
         run: |
-          sed -i 's|GAS_WEB_APP_URL|${{ secrets.GAS_WEB_APP_URL }}|g' config.js
-
+          echo "=== 替換前 ==="
+          cat config.js
+          
+          # 執行替換 (使用雙引號與環境變數，最安全)
+          sed -i "s|GAS_WEB_APP_URL|$GAS_URL|g" config.js
+          
+          echo "=== 替換後 ==="
+          cat config.js
+          
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
