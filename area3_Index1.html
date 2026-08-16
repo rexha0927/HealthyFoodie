@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌿 健康吃貨 | 現場盤點庫存表</title>
+    <title>🌿 健康吃貨 | 出菜盤點庫存表</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -35,17 +35,18 @@
         .tab-btn { flex-shrink: 0; padding: 7px 10px; border: none; border-radius: 20px; font-size: 15px; font-weight: bold; color: var(--text-main); background-color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
         .tab-btn .tab-date { font-size: 11px; font-weight: normal; margin-top: 2px; }
         .tab-btn.active { color: #fff; transform: scale(1.05); }
-        .day-table-container { display: none; width: 100%; max-height: calc(100vh - 280px); overflow-y: auto; overflow-x: hidden; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); }
+        .day-table-container { display: none; width: 100%; max-height: calc(100vh - 280px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); }
         .day-table-container.active { display: block; }
-        table { border-collapse: separate; border-spacing: 0; width: 100%; }
-        th, td { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 4px; text-align: center; font-size: 14px; vertical-align: middle; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 500px; }
+        th, td { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 4px; text-align: center; font-size: 14px; white-space: nowrap; vertical-align: middle; }
         thead th { position: sticky; top: 0; z-index: 10; background-color: var(--table-header); font-weight: 700; height: 45px; }
-        .col-product { text-align: left; padding-left: 10px; font-weight: bold; width: 120px; }
+        .col-sticky-left { position: sticky; left: 0; z-index: 11; background-color: #fff; text-align: left; padding-left: 10px; width: 110px; font-weight: bold; }
+        thead th.col-sticky-left { z-index: 20; background-color: var(--table-header); }
         .prod-info { display: flex; align-items: center; gap: 6px; }
-        input[type=number] { width: 40px; height: 35px; border: 1px solid #eee; text-align: center; font-size: 16px; border-radius: 6px; background-color: transparent; }
+        input[type=number] { width: 50px; height: 35px; border: 1px solid #eee; text-align: center; font-size: 16px; border-radius: 6px; background-color: transparent; }
         input[type=number]:focus { outline: none; border: 1px solid var(--focus-border); background-color: var(--focus-bg); }
         .header-sub { font-size: 11px; color: #777; display: block; margin-top: 2px; }
-        .batch-save-btn { display: block; width: 80%; max-width: 300px; margin: 15px auto; padding: 12px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #d35400; border: none; border-radius: 30px; cursor: pointer; }
+        .batch-save-btn { display: block; width: 80%; max-width: 300px; margin: 15px auto; padding: 12px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #8E24AA; border: none; border-radius: 30px; cursor: pointer; }
         .batch-save-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
         /* --- 載入中動畫 (Spinner) --- */
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(250, 247, 242, 0.85); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 9999; }
@@ -76,7 +77,7 @@
 
     <div class="title-container">
         <button class="back-btn" id="back-btn" onclick="showDatePickerView()">📅 日曆</button>
-        <h2>🥗 現場盤點庫存表</h2>
+        <h2>🥬 出菜盤點庫存表</h2>
         <a href="home.html" class="home-btn">🏠 首頁</a>
     </div>
 
@@ -143,7 +144,7 @@
             document.getElementById('back-btn').style.display = 'inline-flex';
             document.getElementById('batch-save-btn').style.display = 'block';
 
-            await loadDataFromServer();
+            await loadDataFromServer(weekDates);
         }
 
         function showDatePickerView() {
@@ -163,8 +164,6 @@
                 const dateMMDD = formatDateMMDD(weekDates[dIdx]);
                 const fullDate = formatDateYYYYMMDD(weekDates[dIdx]);
                 const isActive = (dIdx === activeIdx);
-                const isSunday = (dIdx === 6);
-                const isMonday = (dIdx === 0); 
 
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${isActive ? 'active' : ''}`;
@@ -177,20 +176,22 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>品項(單位)</th>
-                                <th style="color:#469f50">上午<span class="header-sub">現場</span></th>
-                                <th style="color:#469f50">上午<span class="header-sub">拿取</span></th>
-                                <th style="color:#6095d4">下午<span class="header-sub">拿取</span></th>
-                                ${isSunday ? '<th>剩餘量</th>' : ''}
-                                <th style="background-color: var(--subtotal-bg);">小計</th>
+                                <th class="col-sticky-left">品項(單位)</th>
+                                <th style="color:#8FA276">庫存<span class="header-sub">前日剩餘</span></th>
+                                <th style="color:#d35400">進貨</th>
+                                <th style="color:#469f50">上午用量</th>
+                                <th style="color:#6095d4">下午用量</th>
+                                <th style="background-color: var(--subtotal-bg);">剩餘量</th>
                             </tr>
                         </thead>
                         <tbody>`;
                 
-                products.forEach((p, pIdx) => {
+                servingProducts.forEach((p, pIdx) => {
+                    const readonlyStyle = 'readonly style="background-color: #f0f0f0; color: #888; cursor: not-allowed;" title="由前一日剩餘量自動帶入，不可修改"';
+                    
                     html += `
                         <tr>
-                            <td class="col-product">
+                            <td class="col-sticky-left">
                                 <div class="prod-info">
                                     <span class="prod-icon">${p.icon}</span>
                                     <span class="prod-name">${p.name}
@@ -198,11 +199,11 @@
                                     </span>
                                 </div>
                             </td>
-                            <td><input type="number" id="m_stock_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="m_stock" class="inventory-input" ${isMonday ? 'readonly style="background-color: #f0f0f0; color: #888; cursor: not-allowed;" title="由上週日剩餘量自動帶入，不可修改"' : ''}></td>
-                            <td><input type="number" id="m_take_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="m_take" class="inventory-input"></td>
-                            <td><input type="number" id="a_take_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="a_take" class="inventory-input"></td>
-                            ${isSunday ? `<td><input type="number" id="remain_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="remain" class="inventory-input"></td>` : ''}
-                            <td style="background-color: var(--subtotal-bg); font-weight: bold; color: #d35400; font-size: 16px;" id="subtotal_${dIdx}_${pIdx}"></td>
+                            <td><input type="number" id="stock_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="stock" class="inventory-input" ${readonlyStyle}></td>
+                            <td><input type="number" id="in_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="in" class="inventory-input"></td>
+                            <td><input type="number" id="m_use_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="m_use" class="inventory-input"></td>
+                            <td><input type="number" id="a_use_${dIdx}_${pIdx}" data-date="${fullDate}" data-prod="${p.name}" data-field="a_use" class="inventory-input"></td>
+                            <td style="background-color: var(--subtotal-bg); font-weight: bold; color: #d35400; font-size: 16px;" id="remain_${dIdx}_${pIdx}"></td>
                         </tr>`;
                 });
                 html += `</tbody></table></div>`;
@@ -234,32 +235,41 @@
             btn.disabled = true;
             document.getElementById('loading-overlay').style.display = 'flex';
 
-            const inputs = document.querySelectorAll('.inventory-input');
             const dataToSave = [];
 
-            inputs.forEach(el => {
-                if (el.value.trim() !== "") {
-                    const dateVal = el.getAttribute('data-date');
-                    const productVal = el.getAttribute('data-prod');
-                    const fieldVal = el.getAttribute('data-field');
-                    const valueVal = el.value;
+            for (let dIdx = 0; dIdx < 7; dIdx++) {
+                for (let pIdx = 0; pIdx < servingProducts.length; pIdx++) {
+                    const inEl = document.getElementById(`in_${dIdx}_${pIdx}`);
+                    if (!inEl) continue;
+                    
+                    const dateVal = inEl.getAttribute('data-date');
+                    const prodName = servingProducts[pIdx].name;
 
-                    dataToSave.push({
-                        date: dateVal, product: productVal, field: fieldVal, value: valueVal
+                    // Save inputs
+                    ['in', 'm_use', 'a_use'].forEach(field => {
+                        const el = document.getElementById(`${field}_${dIdx}_${pIdx}`);
+                        if (el && el.value.trim() !== "") {
+                            dataToSave.push({
+                                date: dateVal,
+                                product: prodName,
+                                field: field,
+                                value: el.value
+                            });
+                        }
                     });
 
-                    if (fieldVal === 'remain') {
-                        const sundayDate = new Date(dateVal);
-                        const nextMonday = new Date(sundayDate);
-                        nextMonday.setDate(sundayDate.getDate() + 1);
-                        const nextMondayStr = formatDateYYYYMMDD(nextMonday);
-
+                    // Save calculated remain
+                    const remainText = document.getElementById(`remain_${dIdx}_${pIdx}`).innerText;
+                    if (remainText !== "") {
                         dataToSave.push({
-                            date: nextMondayStr, product: productVal, field: 'm_stock', value: valueVal
+                            date: dateVal,
+                            product: prodName,
+                            field: 'remain',
+                            value: remainText
                         });
                     }
                 }
-            });
+            }
 
             if (dataToSave.length === 0) {
                 alert("沒有需要儲存的資料！");
@@ -297,7 +307,7 @@
             }
         }
 
-        async function loadDataFromServer() {
+        async function loadDataFromServer(weekDates) {
             if (typeof WEB_APP_URL === 'undefined' || !WEB_APP_URL || WEB_APP_URL.includes("請在此貼入")) { alert("請先在 config.js 設定 WEB_APP_URL"); return; }
             document.getElementById('loading-overlay').style.display = 'flex';
 
@@ -321,33 +331,34 @@
                     dataMap[`${dateStr}_${item.product}_${item.field}`] = item.value;
                 });
 
-                const allInputs = document.querySelectorAll('.inventory-input');
-                allInputs.forEach(el => {
-                    const dateVal = el.getAttribute('data-date');
-                    const prodVal = el.getAttribute('data-prod');
-                    const fieldVal = el.getAttribute('data-field');
-                    const key = `${dateVal}_${prodVal}_${fieldVal}`;
+                // Load Last Sunday's remain into Monday's initial stock
+                const mondayDate = new Date(weekDates[0]);
+                const lastSunday = new Date(mondayDate);
+                lastSunday.setDate(mondayDate.getDate() - 1);
+                const lastSundayStr = formatDateYYYYMMDD(lastSunday);
 
-                    if (dataMap[key] !== undefined && dataMap[key] !== "") el.value = dataMap[key];
-                    else el.value = ""; 
+                servingProducts.forEach((p, pIdx) => {
+                    let lastSunRemain = dataMap[`${lastSundayStr}_${p.name}_remain`];
+                    if (lastSunRemain !== undefined && lastSunRemain !== "") {
+                        document.getElementById(`stock_0_${pIdx}`).value = lastSunRemain;
+                    } else {
+                        document.getElementById(`stock_0_${pIdx}`).value = "";
+                    }
                 });
 
-                const mondayInput = document.querySelector('input[id^="m_stock_0_"]');
-                if (mondayInput) {
-                    const mondayDate = new Date(mondayInput.getAttribute('data-date'));
-                    const lastSunday = new Date(mondayDate);
-                    lastSunday.setDate(mondayDate.getDate() - 1);
-                    
-                    const mondayStr = formatDateYYYYMMDD(mondayDate);
-                    const lastSundayStr = formatDateYYYYMMDD(lastSunday);
-
-                    products.forEach((p, pIdx) => {
-                        const mondayStockEl = document.getElementById(`m_stock_0_${pIdx}`);
-                        if (mondayStockEl) {
-                            let val = dataMap[`${mondayStr}_${p.name}_m_stock`];
-                            if (val === undefined || val === "") val = dataMap[`${lastSundayStr}_${p.name}_remain`];
-                            if (val !== undefined && val !== "") mondayStockEl.value = val;
-                        }
+                // Load in, m_use, a_use for all days
+                for (let dIdx = 0; dIdx < 7; dIdx++) {
+                    const fullDate = formatDateYYYYMMDD(weekDates[dIdx]);
+                    servingProducts.forEach((p, pIdx) => {
+                        ['in', 'm_use', 'a_use'].forEach(field => {
+                            const val = dataMap[`${fullDate}_${p.name}_${field}`];
+                            const el = document.getElementById(`${field}_${dIdx}_${pIdx}`);
+                            if (el && val !== undefined && val !== "") {
+                                el.value = val;
+                            } else if (el) {
+                                el.value = "";
+                            }
+                        });
                     });
                 }
 
@@ -361,30 +372,41 @@
         }
 
         function calculateAllSubtotals() {
-            for (let dIdx = 0; dIdx < days.length; dIdx++) {
-                const isSunday = (dIdx === 6);
-                for (let pIdx = 0; pIdx < products.length; pIdx++) {
-                    const m_stock = parseInt(document.getElementById(`m_stock_${dIdx}_${pIdx}`).value) || 0;
-                    const m_take = parseInt(document.getElementById(`m_take_${dIdx}_${pIdx}`).value) || 0;
-                    const a_take = parseInt(document.getElementById(`a_take_${dIdx}_${pIdx}`).value) || 0;
-
-                    let hasInput = document.getElementById(`m_stock_${dIdx}_${pIdx}`).value !== '' || document.getElementById(`m_take_${dIdx}_${pIdx}`).value !== '' || document.getElementById(`a_take_${dIdx}_${pIdx}`).value !== '';
-                    if (isSunday) {
-                        const remainEl = document.getElementById(`remain_${dIdx}_${pIdx}`);
-                        if (remainEl && remainEl.value !== '') hasInput = true;
+            for (let pIdx = 0; pIdx < servingProducts.length; pIdx++) {
+                let currentStock = document.getElementById(`stock_0_${pIdx}`).value;
+                currentStock = currentStock === '' ? 0 : parseInt(currentStock, 10);
+                
+                for (let dIdx = 0; dIdx < 7; dIdx++) {
+                    // Update current day's stock from previous day's calculated remain
+                    if (dIdx > 0) {
+                        const prevRemain = document.getElementById(`remain_${dIdx - 1}_${pIdx}`).innerText;
+                        if (prevRemain !== '') {
+                            document.getElementById(`stock_${dIdx}_${pIdx}`).value = prevRemain;
+                            currentStock = parseInt(prevRemain, 10);
+                        } else {
+                            document.getElementById(`stock_${dIdx}_${pIdx}`).value = '';
+                            currentStock = 0;
+                        }
                     }
 
+                    const stockValStr = document.getElementById(`stock_${dIdx}_${pIdx}`).value;
+                    const inValStr = document.getElementById(`in_${dIdx}_${pIdx}`).value;
+                    const mUseStr = document.getElementById(`m_use_${dIdx}_${pIdx}`).value;
+                    const aUseStr = document.getElementById(`a_use_${dIdx}_${pIdx}`).value;
+
+                    // If any related field has a value, we compute the remain
+                    const hasInput = stockValStr !== '' || inValStr !== '' || mUseStr !== '' || aUseStr !== '';
+                    
                     if (hasInput) {
-                        let targetInput = !isSunday ? document.getElementById(`m_stock_${dIdx + 1}_${pIdx}`) : document.getElementById(`remain_${dIdx}_${pIdx}`);
-                        const minusStr = targetInput.value.trim();
-                        if (minusStr !== "") {
-                            const minusVal = parseInt(minusStr, 10) || 0;
-                            document.getElementById(`subtotal_${dIdx}_${pIdx}`).innerText = m_stock + m_take + a_take - minusVal;
-                        } else {
-                            document.getElementById(`subtotal_${dIdx}_${pIdx}`).innerText = '';
-                        }
+                        const s = parseInt(stockValStr) || 0;
+                        const i = parseInt(inValStr) || 0;
+                        const m = parseInt(mUseStr) || 0;
+                        const a = parseInt(aUseStr) || 0;
+                        
+                        currentStock = s + i - m - a;
+                        document.getElementById(`remain_${dIdx}_${pIdx}`).innerText = currentStock;
                     } else {
-                        document.getElementById(`subtotal_${dIdx}_${pIdx}`).innerText = '';
+                        document.getElementById(`remain_${dIdx}_${pIdx}`).innerText = '';
                     }
                 }
             }

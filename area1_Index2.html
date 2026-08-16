@@ -89,22 +89,6 @@
     <!-- 🌟 載入全域設定檔 -->
     <script src="config.js"></script>
     <script>
-        const products = [
-            { name: "薑黃優格雞腿", icon: "🍗" }, { name: "蒜香醬油雞腿", icon: "🍗" },
-            { name: "原味雞胸", icon: "🐔" }, { name: "羅勒雞胸", icon: "🌿" },
-            { name: "柚子雞胸", icon: "🍋" }, { name: "山葵雞腿", icon: "🌱" },
-            { name: "當歸雞胸", icon: "🏺" }, { name: "川味雞胸", icon: "🌶️" },
-            { name: "素宮保雞丁", icon: "🐤" }, { name: "素梅乾筍絲", icon: "🎍" },
-            { name: "赤玉牛肉煮", icon: "🍲" }, { name: "牛腱", icon: "🥩" },
-            { name: "雲耳露", icon: "🥤" }, { name: "花米", icon: "🥦" },
-            { name: "小清肉", icon: "🥓" }, { name: "洋蔥", icon: "🧅" },
-            { name: "薑汁醬", icon: "🫚" }, { name: "泰式醬", icon: "🍯" },
-            { name: "松阪豬湯", icon: "🍲" }, { name: "藥膳雞湯", icon: "🥣" },
-            { name: "松阪豬肉", icon: "🐷" }, { name: "蒜末", icon: "🧄" },
-            { name: "薑絲", icon: "🫚" }, { name: "胡蘿蔔絲", icon: "🥕" },
-            { name: "毛豆莢", icon: "🫛" }, { name: "雞米花", icon: "🍤" }
-        ];
-
         const monthInput = document.getElementById('select-month');
         const now = new Date();
         monthInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -183,8 +167,7 @@
 
                 let tbodyHtml = '';
                 products.forEach((p, pIdx) => {
-                    const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉') ? '片' : '包';
-                    let rowHtml = `<tr><td class="col-sticky-left"><div class="prod-info"><span class="prod-icon">${p.icon}</span><span class="prod-name">${p.name} <span style="font-weight:normal;">(${unit})</span></span></div></td>`;
+                    let rowHtml = `<tr><td class="col-sticky-left"><div class="prod-info"><span class="prod-icon">${p.icon}</span><span class="prod-name">${p.name} <span style="font-weight:normal;">(${p.unit})</span></span></div></td>`;
                     let monthTotal = 0;
                     for (let w = 0; w < maxWeeks; w++) {
                         monthTotal += weeklyTotals[pIdx][w];

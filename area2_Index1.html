@@ -98,29 +98,6 @@
     <!-- 🌟 載入全域設定檔 -->
     <script src="config.js"></script>
     <script>
-        const products = [
-            { name: "薑黃優格雞腿", icon: "🍗" }, { name: "蒜香醬油雞腿", icon: "🍗" },
-            { name: "原味雞胸", icon: "🐔" }, { name: "羅勒雞胸", icon: "🌿" },
-            { name: "柚子雞胸", icon: "🍋" }, { name: "山葵雞腿", icon: "🌱" },
-            { name: "當歸雞胸", icon: "🏺" }, { name: "川味雞胸", icon: "🌶️" },
-            { name: "素宮保雞丁", icon: "🐤" }, { name: "素梅乾筍絲", icon: "🎍" },
-            { name: "赤玉牛肉煮", icon: "🍲" }, { name: "牛腱", icon: "🥩" },
-            { name: "雲耳露", icon: "🥤" }, { name: "花米", icon: "🥦" },
-            { name: "小清肉", icon: "🥓" }, { name: "洋蔥", icon: "🧅" },
-            { name: "薑汁醬", icon: "🫚" }, { name: "泰式醬", icon: "🍯" },
-            { name: "松阪豬湯", icon: "🍲" }, { name: "藥膳雞湯", icon: "🥣" },
-            { name: "松阪豬肉", icon: "🐷" }, { name: "蒜末", icon: "🧄" },
-            { name: "薑絲", icon: "🫚" }, { name: "胡蘿蔔絲", icon: "🥕" },
-            { name: "毛豆莢", icon: "🫛" }, { name: "雞米花", icon: "🍤" }
-        ];
-
-        const days = [
-            { name: "(一)", color: "#E09C9C" }, { name: "(二)", color: "#DAB763" }, 
-            { name: "(三)", color: "#8BABD0" }, { name: "(四)", color: "#D8A375" }, 
-            { name: "(五)", color: "#95AD8E" }, { name: "(六)", color: "#A897A6" }, 
-            { name: "(日)", color: "#8BABD0" }  
-        ];
-
         const dateInput = document.getElementById('select-date');
         const todayStr = new Date().toISOString().split('T')[0];
         dateInput.value = todayStr;
@@ -209,7 +186,6 @@
                         <tbody>`;
                 
                 products.forEach((p, pIdx) => {
-                    const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉' ? '片' : '包');
                     const readonlyStyle = 'readonly style="background-color: #f0f0f0; color: #d35400; font-weight: bold; cursor: not-allowed;" title="由盤點表的上午+下午拿取自動加總，不可修改"';
 
                     html += `
@@ -218,7 +194,7 @@
                                 <div class="prod-info">
                                     <span class="prod-icon">${p.icon}</span>
                                     <span class="prod-name">${p.name}
-                                        <span style="font-weight:normal;">(${unit})</span>
+                                        <span style="font-weight:normal;">(${p.unit})</span>
                                     </span>
                                 </div>
                             </td>

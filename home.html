@@ -22,6 +22,9 @@
             --card-green-bg: #E8F5E9;
             --card-green-border: #C8E6C9;
             --card-green-text: #388E3C;
+            --card-purple-bg: #F3E5F5;
+            --card-purple-border: #E1BEE7;
+            --card-purple-text: #8E24AA;
         }
 
         * {
@@ -88,36 +91,34 @@
             margin: 15px auto 25px auto;
         }
 
-        .main-btn {
-            background: linear-gradient(135deg, #FF80AB, #FF4081);
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 12px 35px;
-            border-radius: 30px;
-            border: none;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .main-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
-        }
-
         .section-subtitle {
             font-size: 14px;
             font-weight: bold;
             color: #888;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+
+        /* 🆕 新增群組標題樣式 */
+        .group-section {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        .group-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #5C4D43;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 8px;
+            border-left: 5px solid #8FA276; /* 左側綠色裝飾線 */
+            letter-spacing: 1px;
         }
 
         .grid-container {
@@ -125,7 +126,16 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             width: 100%;
-            max-width: 800px;
+        }
+
+        /* 🆕 單一卡片群組的防拉寬機制 */
+        .grid-single {
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 601px) {
+            .grid-single {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (max-width: 600px) {
@@ -200,31 +210,55 @@
         </div>
     </div>
 
-    <div class="grid-container">
-        <a href="area1_Index1.html" class="card card-blue">
-            <div class="card-icon">✏️</div>
-            <div class="card-title">現場盤點庫存表</div>
-            <hr class="card-divider" style="border-color: var(--card-blue-border);">
-            <div class="card-sub">查看與盤點現場庫存 💕</div>
-        </a>
-        <a href="area1_Index2.html" class="card card-pink">
-            <div class="card-icon">📅</div>
-            <div class="card-title">各週與整月統計表</div>
-            <hr class="card-divider" style="border-color: var(--card-pink-border);">
-            <div class="card-sub">查閱週/月使用量 💕</div>
-        </a>
-        <a href="area2_Index1.html" class="card card-orange">
-            <div class="card-icon">✏️</div>
-            <div class="card-title">出入庫記錄表</div>
-            <hr class="card-divider" style="border-color: var(--card-orange-border);">
-            <div class="card-sub">記錄出入庫使用量 💕</div>
-        </a>
-        <a href="area2_Index2.html" class="card card-green">
-            <div class="card-icon">📦</div>
-            <div class="card-title">出入庫統計表</div>
-            <hr class="card-divider" style="border-color: var(--card-green-border);">
-            <div class="card-sub">查閱出入庫統計與安全庫存預警 💕</div>
-        </a>
+    <!-- 🌟 群組一：現場盤點 -->
+    <div class="group-section">
+        <div class="group-title">🏪 現場盤點</div>
+        <div class="grid-container">
+            <a href="area1_Index1.html" class="card card-blue">
+                <div class="card-icon">✏️</div>
+                <div class="card-title">現場盤點庫存表</div>
+                <hr class="card-divider" style="border-color: var(--card-blue-border);">
+                <div class="card-sub">查看與盤點現場庫存 💕</div>
+            </a>
+            <a href="area1_Index2.html" class="card card-pink">
+                <div class="card-icon">📅</div>
+                <div class="card-title">各週與整月統計表</div>
+                <hr class="card-divider" style="border-color: var(--card-pink-border);">
+                <div class="card-sub">查閱週/月使用量 💕</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 🌟 群組二：倉庫進出 -->
+    <div class="group-section">
+        <div class="group-title">📦 倉庫進出</div>
+        <div class="grid-container">
+            <a href="area2_Index1.html" class="card card-orange">
+                <div class="card-icon">✏️</div>
+                <div class="card-title">出入庫記錄表</div>
+                <hr class="card-divider" style="border-color: var(--card-orange-border);">
+                <div class="card-sub">記錄出入庫使用量 💕</div>
+            </a>
+            <a href="area2_Index2.html" class="card card-green">
+                <div class="card-icon">📦</div>
+                <div class="card-title">出入庫統計表</div>
+                <hr class="card-divider" style="border-color: var(--card-green-border);">
+                <div class="card-sub">查閱出入庫統計與安全預警 💕</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 🌟 群組三：出菜管理 -->
+    <div class="group-section">
+        <div class="group-title">🥬 出菜管理</div>
+        <div class="grid-container grid-single">
+            <a href="area3_Index1.html" class="card card-purple">
+                <div class="card-icon">🥬</div>
+                <div class="card-title">出菜盤點庫存表</div>
+                <hr class="card-divider" style="border-color: var(--card-purple-border);">
+                <div class="card-sub">高麗菜等出菜庫存管理 💕</div>
+            </a>
+        </div>
     </div>
 </body>
 </html>
