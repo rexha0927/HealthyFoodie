@@ -23,12 +23,14 @@
         .home-btn { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 20px; background-color: #fff; color: var(--text-main); font-weight: bold; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; z-index: 5; text-decoration: none; }
         .month-picker-container { text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 14px; }
         .month-picker-container input[type="date"] { font-size: 14px; padding: 5px 10px; border: 1px solid var(--border-color); border-radius: 12px; }
-        .table-container { width: 100%; max-height: calc(100vh - 220px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 15px;}
+
+        .table-container { width: 100%; max-height: calc(100vh - 240px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 80px; }
         table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 600px;}
         th, td { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 6px; text-align: center; font-size: 13.5px; white-space: nowrap; }
         thead th { position: sticky; top: 0; z-index: 10; background-color: var(--table-header); }
         .col-sticky-left { position: sticky; left: 0; z-index: 11; background-color: #fff; text-align: left; padding-left: 12px; font-weight: bold; width: 120px; }
         thead th.col-sticky-left { z-index: 20; background-color: var(--table-header); }
+
         .prod-info { display: flex; align-items: center; gap: 6px; }
         input[type=number] { width: 55px; height: 32px; border: 1px solid #eee; text-align: center; font-size: 14px; border-radius: 6px; background-color: transparent; }
         input[readonly] { background-color: #f0f0f0; cursor: not-allowed; }
@@ -36,8 +38,9 @@
         .status-warning { color: #e74c3c; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 10px; }
         .bg-calc { background-color: #fcf8e3; font-weight: bold; }
         
-        .batch-save-btn { display: block; width: 80%; max-width: 300px; margin: 15px auto; padding: 12px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #d35400; border: none; border-radius: 30px; cursor: pointer; }
-        .batch-save-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+        /* 🌟 置底固定按鈕 */
+        .batch-save-btn { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 350px; padding: 14px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #d35400; border: none; border-radius: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.25); margin: 0; }
+        .batch-save-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; box-shadow: none; }
 
         /* --- 載入中動畫 (Spinner) --- */
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(250, 247, 242, 0.85); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 9999; }
@@ -94,7 +97,7 @@
         </table>
     </div>
 
-    <button id="save-safe-btn" class="batch-save-btn" onclick="saveSafeStock()" style="display: none;">💾 儲存安全庫存設定</button>
+    <button id="save-safe-btn" class="batch-save-btn" onclick="saveSafeStock()">💾 儲存安全庫存設定</button>
 
     <!-- 🌟 載入全域設定檔 -->
     <script src="config.js"></script>

@@ -35,19 +35,24 @@
         .tab-btn { flex-shrink: 0; padding: 7px 10px; border: none; border-radius: 20px; font-size: 15px; font-weight: bold; color: var(--text-main); background-color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
         .tab-btn .tab-date { font-size: 11px; font-weight: normal; margin-top: 2px; }
         .tab-btn.active { color: #fff; transform: scale(1.05); }
-        .day-table-container { display: none; width: 100%; max-height: calc(100vh - 280px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); }
+
+        .day-table-container { display: none; width: 100%; max-height: calc(100vh - 240px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 80px; }
         .day-table-container.active { display: block; }
-        table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 500px; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 600px; }
         th, td { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 4px; text-align: center; font-size: 14px; white-space: nowrap; vertical-align: middle; }
         thead th { position: sticky; top: 0; z-index: 10; background-color: var(--table-header); font-weight: 700; height: 45px; }
         .col-sticky-left { position: sticky; left: 0; z-index: 11; background-color: #fff; text-align: left; padding-left: 10px; width: 110px; font-weight: bold; }
         thead th.col-sticky-left { z-index: 20; background-color: var(--table-header); }
+
         .prod-info { display: flex; align-items: center; gap: 6px; }
         input[type=number] { width: 50px; height: 35px; border: 1px solid #eee; text-align: center; font-size: 16px; border-radius: 6px; background-color: transparent; }
         input[type=number]:focus { outline: none; border: 1px solid var(--focus-border); background-color: var(--focus-bg); }
         .header-sub { font-size: 11px; color: #777; display: block; margin-top: 2px; }
-        .batch-save-btn { display: block; width: 80%; max-width: 300px; margin: 15px auto; padding: 12px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #8E24AA; border: none; border-radius: 30px; cursor: pointer; }
-        .batch-save-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+ 
+        /* 🌟 置底固定按鈕 */
+        .batch-save-btn { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 350px; padding: 14px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #8E24AA; border: none; border-radius: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 15px rgba(142, 36, 170, 0.4); margin: 0; }
+        .batch-save-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; box-shadow: none; }
+
         /* --- 載入中動畫 (Spinner) --- */
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(250, 247, 242, 0.85); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 9999; }
         .spinner { width: 50px; height: 50px; border: 6px solid #EAE3D9; border-top: 6px solid #8FA276; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
@@ -92,8 +97,9 @@
         <div class="week-info" id="week-info-text"></div>
         <div class="tabs-container" id="tabs-container"></div>
         <div id="all-tables-wrapper"></div>
-        <button id="batch-save-btn" class="batch-save-btn" onclick="saveBatchData()" style="display: none;">💾 儲存本週所有變更</button>
     </div>
+
+    <button id="batch-save-btn" class="batch-save-btn" onclick="saveBatchData()">💾 儲存本週所有變更</button>
 
     <!-- 🌟 載入全域設定檔 -->
     <script src="config.js"></script>

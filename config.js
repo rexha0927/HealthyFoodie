@@ -1,5 +1,5 @@
 // 全域設定檔
-const WEB_APP_URL = "GAS_WEB_APP_URL";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyitutr5aBVGSegCTCP3Css3cgr4FGMYbMMGemyx-7mgJ-Fju_izRWob2gS5ElQMCcE/exec";
 
 // 🌟 全域品項設定 (現場盤點與出入庫)
 const products = [
