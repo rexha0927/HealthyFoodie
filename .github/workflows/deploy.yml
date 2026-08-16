@@ -18,12 +18,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Inject API URL
+      - name: Replace API URL
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["config.js"]'
         env:
-          GAS_URL: ${{ secrets.GAS_WEB_APP_URL }}
-        run: |
-          sed -i "s|GAS_WEB_APP_URL|$GAS_URL|g" config.js
-          
+          GAS_WEB_APP_URL: ${{ secrets.GAS_WEB_APP_URL }}
+  
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
