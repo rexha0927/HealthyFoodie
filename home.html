@@ -120,7 +120,6 @@
             gap: 6px;
         }
 
-        /* --- 四宮格選單網格 --- */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -180,44 +179,9 @@
             gap: 4px;
             margin-top: 2px;
         }
-
-        .badge-upcoming {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: #D4A373;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 10px;
-        }
-
-        /* 各卡片配色屬性 */
-        .card-blue {
-            background-color: var(--card-blue-bg);
-            border-color: var(--card-blue-border);
-            color: var(--card-blue-text);
-        }
-        .card-pink {
-            background-color: var(--card-pink-bg);
-            border-color: var(--card-pink-border);
-            color: var(--card-pink-text);
-        }
-        .card-orange {
-            background-color: var(--card-orange-bg);
-            border-color: var(--card-orange-border);
-            color: var(--card-orange-text);
-        }
-        .card-green {
-            background-color: var(--card-green-bg);
-            border-color: var(--card-green-border);
-            color: var(--card-green-text);
-        }
     </style>
 </head>
 <body>
-
     <div class="header-container">
         <div class="sub-tag">🌻 健康與美味 🌻</div>
         <div class="brand-header">
@@ -236,33 +200,25 @@
         </div>
     </div>
 
-    <!-- 四宮格區域 -->
     <div class="grid-container">
-        <!-- 1. 第一個方塊導頁至現場庫存表 (預設連結設為 area1_Index1.html) -->
         <a href="area1_Index1.html" class="card card-blue">
             <div class="card-icon">✏️</div>
             <div class="card-title">現場盤點庫存表</div>
             <hr class="card-divider" style="border-color: var(--card-blue-border);">
             <div class="card-sub">查看與盤點現場庫存 💕</div>
         </a>
-
-        <!-- 2. 第二個方塊 -->
         <a href="area1_Index2.html" class="card card-pink">
             <div class="card-icon">📅</div>
             <div class="card-title">各週與整月統計表</div>
             <hr class="card-divider" style="border-color: var(--card-pink-border);">
             <div class="card-sub">查閱週/月使用量 💕</div>
         </a>
-
-        <!-- 3. 第三個方塊 -->
         <a href="area2_Index1.html" class="card card-orange">
             <div class="card-icon">✏️</div>
             <div class="card-title">出入庫記錄表</div>
             <hr class="card-divider" style="border-color: var(--card-orange-border);">
             <div class="card-sub">記錄出入庫使用量 💕</div>
         </a>
-
-        <!-- 4. 第四個方塊 (標示即將推出) -->
         <a href="area2_Index2.html" class="card card-green">
             <div class="card-icon">📦</div>
             <div class="card-title">出入庫統計表</div>
@@ -270,6 +226,5 @@
             <div class="card-sub">查閱出入庫統計與安全庫存預警 💕</div>
         </a>
     </div>
-
 </body>
 </html>

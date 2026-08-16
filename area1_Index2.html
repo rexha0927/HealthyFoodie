@@ -14,195 +14,38 @@
             --subtotal-bg: #F9E4B7;    
             --focus-border: #8FA276;
         }
-
-        body {
-            font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif;
-            margin: 15px 10px;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-        }
-
-        /* --- 1. 最上方品牌置頂標題與 Logo --- */
-        .brand-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .brand-logo {
-            width: 58px;
-            height: 48px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-        .brand-text-group {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: left;
-        }
-        .brand-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #436B36;
-            letter-spacing: 1px;
-            margin: 0;
-            line-height: 1.1;
-        }
-        .brand-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: #D4A338;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-top: 3px;
-        }
-
-        /* --- 頁面二級標題容器 --- */
-        .title-container {
-            text-align: center;
-            margin-bottom: 12px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 42px;
-        }
-
-        h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            background-color: #fff;
-            border: 2px dashed var(--border-color);
-            border-radius: 30px;
-            box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05);
-        }
-
-        /* --- 左上角返回首頁按鈕 --- */
-        .back-btn {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 6px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            background-color: #fff;
-            color: var(--text-main);
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            z-index: 5;
-            text-decoration: none;
-        }
-        .back-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* --- 月份選擇區塊 --- */
-        .month-picker-container {
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .month-picker-container input[type="month"] {
-            font-family: inherit;
-            padding: 5px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background-color: #fff;
-            color: var(--text-main);
-            outline: none;
-            font-weight: bold;
-        }
-
-        /* --- 表格容器 --- */
-        .table-container {
-            width: 100%;
-            max-height: calc(100vh - 220px);
-            overflow-y: auto; 
-            overflow-x: auto;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        table {
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%; 
-            min-width: 600px;
-        }
-
-        th, td {
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 8px 4px;
-            text-align: center;
-            font-size: 14px;
-            background-color: #fff;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-
-        thead th {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background-color: var(--table-header);
-            font-weight: 700;
-            height: 45px;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
-        }
-
-        /* --- 第一欄左側固定樣式 --- */
-        .col-sticky-left {
-            position: sticky;
-            left: 0;
-            z-index: 11;
-            background-color: #fff;
-            text-align: left;
-            padding-left: 10px;
-            font-weight: bold;
-            width: 120px;
-        }
-        thead th.col-sticky-left {
-            z-index: 20;
-            background-color: var(--table-header);
-        }
-
-        .prod-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .prod-icon { font-size: 16px; }
-        .prod-name { font-size: 14px; }
-
-        .col-total {
-            background-color: var(--subtotal-bg);
-            font-weight: bold;
-            color: #d35400;
-            font-size: 15px;
-        }
+        body { font-family: 'Zen Maru Gothic', "Microsoft JhengHei", sans-serif; margin: 15px 10px; background-color: var(--bg-color); color: var(--text-main); }
+        .brand-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; }
+        .brand-logo { width: 58px; height: 48px; object-fit: contain; flex-shrink: 0; }
+        .brand-text-group { display: flex; flex-direction: column; justify-content: center; text-align: left; }
+        .brand-title { font-size: 22px; font-weight: 700; color: #436B36; margin: 0; line-height: 1.1; }
+        .brand-subtitle { font-size: 11px; font-weight: 700; color: #D4A338; margin-top: 3px; }
+        .title-container { text-align: center; margin-bottom: 12px; position: relative; display: flex; align-items: center; justify-content: center; min-height: 42px; }
+        h3 { font-size: 18px; font-weight: 700; margin: 0; display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background-color: #fff; border: 2px dashed var(--border-color); border-radius: 30px; box-shadow: 2px 2px 8px rgba(92, 77, 67, 0.05); }
+        .home-btn { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 20px; background-color: #fff; color: var(--text-main); font-weight: bold; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; z-index: 5; text-decoration: none; }
+        .month-picker-container { text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 14px; }
+        .month-picker-container input[type="month"] { font-size: 14px; padding: 5px 10px; border: 1px solid var(--border-color); border-radius: 12px; }
+        .table-container { width: 100%; max-height: calc(100vh - 220px); overflow: auto; background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 600px; }
+        th, td { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 4px; text-align: center; font-size: 14px; white-space: nowrap; }
+        thead th { position: sticky; top: 0; z-index: 10; background-color: var(--table-header); }
+        .col-sticky-left { position: sticky; left: 0; z-index: 11; background-color: #fff; text-align: left; padding-left: 10px; font-weight: bold; width: 120px; }
+        thead th.col-sticky-left { z-index: 20; background-color: var(--table-header); }
+        .prod-info { display: flex; align-items: center; gap: 6px; }
+        .col-total { background-color: var(--subtotal-bg); font-weight: bold; color: #d35400; font-size: 15px; }
+        /* --- 載入中動畫 (Spinner) --- */
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(250, 247, 242, 0.85); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 9999; }
+        .spinner { width: 50px; height: 50px; border: 6px solid #EAE3D9; border-top: 6px solid #8FA276; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: #5C4D43; font-weight: bold; font-size: 16px; }
     </style>
 </head>
 <body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">資料努力載入中...</div>
+    </div>
 
-    <!-- 1. 置頂品牌標頭 -->
     <div class="brand-header">
         <svg class="brand-logo" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
             <rect x="180" y="190" width="180" height="25" fill="#E8CD52"/>
@@ -217,19 +60,16 @@
         </div>
     </div>
 
-    <!-- 2. 頁面副標題區塊 -->
     <div class="title-container">
-        <a href="home.html" class="back-btn">🏠首頁</a>
         <h3>📊 各週與整月統計表</h3>
+        <a href="home.html" class="home-btn">🏠 首頁</a>
     </div>
 
-    <!-- 3. 月份選擇器 -->
     <div class="month-picker-container">
         <label for="select-month">📅 請選擇統計月份：</label>
         <input type="month" id="select-month" onchange="renderStatsTable()">
     </div>
 
-    <!-- 4. 庫存統計總表 -->
     <div class="table-container">
         <table>
             <thead>
@@ -242,156 +82,126 @@
                     <th style="background-color: var(--subtotal-bg);">整月使用量</th>
                 </tr>
             </thead>
-            <tbody id="stats-tbody">
-                <!-- 由 JavaScript 動態產生 -->
-            </tbody>
+            <tbody id="stats-tbody"></tbody>
         </table>
     </div>
 
+    <!-- 🌟 載入全域設定檔 -->
+    <script src="config.js"></script>
     <script>
         const products = [
-            { name: "薑黃優格雞腿", icon: "🍗" },
-            { name: "蒜香醬油雞腿", icon: "🍗" },
-            { name: "原味雞胸", icon: "🐔" },
-            { name: "羅勒雞胸", icon: "🌿" },
-            { name: "柚子雞胸", icon: "🍋" },
-            { name: "山葵雞腿", icon: "🌱" },
-            { name: "當歸雞胸", icon: "🏺" },
-            { name: "川味雞胸", icon: "🌶️" },
-            { name: "素宮保雞丁", icon: "🐤" },
-            { name: "素梅乾筍絲", icon: "🎍" },
-            { name: "赤玉牛肉煮", icon: "🍲" },
-            { name: "牛腱", icon: "🥩" },
-            { name: "雲耳露", icon: "🥤" },
-            { name: "花米", icon: "🥦" },
-            { name: "小清肉", icon: "🥓" },
-            { name: "洋蔥", icon: "🧅" },
-            { name: "薑汁醬", icon: "🫚" },
-            { name: "泰式醬", icon: "🍯" },
-            { name: "松阪豬湯", icon: "🍲" },
-            { name: "藥膳雞湯", icon: "🥣" },
-            { name: "松阪豬肉", icon: "🐷" },
-            { name: "蒜末", icon: "🧄" },
-            { name: "薑絲", icon: "🫚" },
-            { name: "胡蘿蔔絲", icon: "🥕" },
-            { name: "毛豆莢", icon: "🫛" },
-            { name: "雞米花", icon: "🍤" }
+            { name: "薑黃優格雞腿", icon: "🍗" }, { name: "蒜香醬油雞腿", icon: "🍗" },
+            { name: "原味雞胸", icon: "🐔" }, { name: "羅勒雞胸", icon: "🌿" },
+            { name: "柚子雞胸", icon: "🍋" }, { name: "山葵雞腿", icon: "🌱" },
+            { name: "當歸雞胸", icon: "🏺" }, { name: "川味雞胸", icon: "🌶️" },
+            { name: "素宮保雞丁", icon: "🐤" }, { name: "素梅乾筍絲", icon: "🎍" },
+            { name: "赤玉牛肉煮", icon: "🍲" }, { name: "牛腱", icon: "🥩" },
+            { name: "雲耳露", icon: "🥤" }, { name: "花米", icon: "🥦" },
+            { name: "小清肉", icon: "🥓" }, { name: "洋蔥", icon: "🧅" },
+            { name: "薑汁醬", icon: "🫚" }, { name: "泰式醬", icon: "🍯" },
+            { name: "松阪豬湯", icon: "🍲" }, { name: "藥膳雞湯", icon: "🥣" },
+            { name: "松阪豬肉", icon: "🐷" }, { name: "蒜末", icon: "🧄" },
+            { name: "薑絲", icon: "🫚" }, { name: "胡蘿蔔絲", icon: "🥕" },
+            { name: "毛豆莢", icon: "🫛" }, { name: "雞米花", icon: "🍤" }
         ];
 
-        // 預設將月份選單設為當月
         const monthInput = document.getElementById('select-month');
         const now = new Date();
-        const yearStr = now.getFullYear();
-        const monthStr = String(now.getMonth() + 1).padStart(2, '0');
-        monthInput.value = `${yearStr}-${monthStr}`;
+        monthInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-        // 計算特定日期屬於該月的第幾週 (以週一為一週開始)
+        function formatDateYYYYMMDD(d) {
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
         function getWeekOfMonth(date) {
             const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
             let dayOfWeek = startOfMonth.getDay();
-            dayOfWeek = (dayOfWeek === 0) ? 7 : dayOfWeek; // 換算 1(一) ~ 7(日)
-            const dayOfMonth = date.getDate();
-            return Math.ceil((dayOfMonth + dayOfWeek - 1) / 7);
+            dayOfWeek = (dayOfWeek === 0) ? 7 : dayOfWeek; 
+            return Math.ceil((date.getDate() + dayOfWeek - 1) / 7);
         }
 
-        // 計算每日小計（對應算式：上午現場 + 上午拿取 + 下午拿取 - 隔日上午現場/週日剩餘）
-        function calculateDaySubtotal(data, dIdx, pIdx) {
-            const isSunday = (dIdx === 6);
-            const m_stock = parseInt(data[`m_stock_${dIdx}_${pIdx}`]) || 0;
-            const m_take = parseInt(data[`m_take_${dIdx}_${pIdx}`]) || 0;
-            const a_take = parseInt(data[`a_take_${dIdx}_${pIdx}`]) || 0;
+        async function renderStatsTable() {
+            if (typeof WEB_APP_URL === 'undefined' || !WEB_APP_URL || WEB_APP_URL.includes("請在此貼入")) { alert("請先在 config.js 設定 WEB_APP_URL"); return; }
 
-            let hasInput = (data[`m_stock_${dIdx}_${pIdx}`] !== undefined && data[`m_stock_${dIdx}_${pIdx}`] !== '') ||
-                           (data[`m_take_${dIdx}_${pIdx}`] !== undefined && data[`m_take_${dIdx}_${pIdx}`] !== '') ||
-                           (data[`a_take_${dIdx}_${pIdx}`] !== undefined && data[`a_take_${dIdx}_${pIdx}`] !== '');
-
-            if (isSunday && data[`remain_${dIdx}_${pIdx}`] !== undefined && data[`remain_${dIdx}_${pIdx}`] !== '') {
-                hasInput = true;
-            }
-
-            if (!hasInput) return 0;
-
-            let minusVal = 0;
-            if (!isSunday) {
-                minusVal = parseInt(data[`m_stock_${dIdx + 1}_${pIdx}`]) || 0;
-            } else {
-                minusVal = parseInt(data[`remain_${dIdx}_${pIdx}`]) || 0;
-            }
-
-            return m_stock + m_take + a_take - minusVal;
-        }
-
-        // 從 localStorage 撈取資料並計算第 1~4 週的「週小計」總和
-        function getWeeklySubtotalsFromStorage(selectedYearMonth) {
-            const weeklyTotals = Array(products.length).fill(0).map(() => [0, 0, 0, 0]);
-
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith("inventory_")) {
-                    const dateStr = key.replace("inventory_", "");
-                    if (dateStr.startsWith(selectedYearMonth)) {
-                        const dateObj = new Date(dateStr);
-                        const weekNum = getWeekOfMonth(dateObj); // 1~4
-
-                        if (weekNum >= 1 && weekNum <= 4) {
-                            try {
-                                const dayData = JSON.parse(localStorage.getItem(key));
-                                const dayOfWeek = dateObj.getDay();
-                                const dIdx = (dayOfWeek === 0) ? 6 : dayOfWeek - 1;
-
-                                products.forEach((_, pIdx) => {
-                                    const subtotal = calculateDaySubtotal(dayData, dIdx, pIdx);
-                                    weeklyTotals[pIdx][weekNum - 1] += subtotal;
-                                });
-                            } catch (e) {
-                                console.error("解析 LocalStorage 失敗", e);
-                            }
-                        }
-                    }
-                }
-            }
-            return weeklyTotals;
-        }
-
-        function renderStatsTable() {
+            document.getElementById('loading-overlay').style.display = 'flex';
             const tbody = document.getElementById('stats-tbody');
+            const theadTr = document.querySelector('thead tr');
+            
             const selectedYM = monthInput.value; 
-            const weeklyTotals = getWeeklySubtotalsFromStorage(selectedYM);
+            const [year, month] = selectedYM.split('-');
+            const lastDayOfMonth = new Date(year, month, 0); 
+            const maxWeeks = getWeekOfMonth(lastDayOfMonth); 
 
-            let html = '';
+            let theadHtml = `<th class="col-sticky-left">品項(單位)</th>`;
+            for(let w = 1; w <= maxWeeks; w++) theadHtml += `<th>第 ${w} 週</th>`;
+            theadHtml += `<th style="background-color: var(--subtotal-bg);">整月使用量</th>`;
+            theadTr.innerHTML = theadHtml;
 
-            products.forEach((p, pIdx) => {
-                const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉') ? '片' : '包';
+            try {
+                let allData;
+                const cacheKey = 'inventoryDataCache';
+                const cachedData = sessionStorage.getItem(cacheKey);
                 
-                const w1 = weeklyTotals[pIdx][0];
-                const w2 = weeklyTotals[pIdx][1];
-                const w3 = weeklyTotals[pIdx][2];
-                const w4 = weeklyTotals[pIdx][3];
-                const monthTotal = w1 + w2 + w3 + w4;
+                if (cachedData) {
+                    allData = JSON.parse(cachedData);
+                } else {
+                    const response = await fetch(WEB_APP_URL);
+                    allData = await response.json();
+                    sessionStorage.setItem(cacheKey, JSON.stringify(allData));
+                }
 
-                html += `
-                    <tr>
-                        <td class="col-sticky-left">
-                            <div class="prod-info">
-                                <span class="prod-icon">${p.icon}</span>
-                                <span class="prod-name">${p.name} 
-                                    <span style="font-weight:normal;">(${unit})</span>
-                                </span>
-                            </div>
-                        </td>
-                        <td>${w1}</td>
-                        <td>${w2}</td>
-                        <td>${w3}</td>
-                        <td>${w4}</td>
-                        <td class="col-total">${monthTotal}</td>
-                    </tr>
-                `;
-            });
+                const dataMap = {};
+                allData.forEach(item => {
+                    const d = new Date(item.date);
+                    dataMap[`${formatDateYYYYMMDD(d)}_${item.product}_${item.field}`] = parseInt(item.value, 10);
+                });
 
-            tbody.innerHTML = html;
+                const weeklyTotals = Array(products.length).fill(0).map(() => Array(maxWeeks).fill(0));
+                
+                for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                    const currentDate = new Date(year, month - 1, day);
+                    const dateStr = formatDateYYYYMMDD(currentDate);
+                    const weekIdx = getWeekOfMonth(currentDate) - 1; 
+                    const isSunday = (currentDate.getDay() === 0);
+                    
+                    const nextDate = new Date(currentDate);
+                    nextDate.setDate(currentDate.getDate() + 1);
+                    const nextDateStr = formatDateYYYYMMDD(nextDate);
+
+                    products.forEach((p, pIdx) => {
+                        const m_stock = dataMap[`${dateStr}_${p.name}_m_stock`];
+                        const m_take = dataMap[`${dateStr}_${p.name}_m_take`];
+                        const a_take = dataMap[`${dateStr}_${p.name}_a_take`];
+                        const remain = dataMap[`${dateStr}_${p.name}_remain`];
+                        
+                        if ((m_stock !== undefined) || (m_take !== undefined) || (a_take !== undefined) || (isSunday && remain !== undefined)) {
+                            let minusVal = !isSunday ? (dataMap[`${nextDateStr}_${p.name}_m_stock`] || 0) : (remain || 0);
+                            weeklyTotals[pIdx][weekIdx] += (m_stock || 0) + (m_take || 0) + (a_take || 0) - minusVal;
+                        }
+                    });
+                }
+
+                let tbodyHtml = '';
+                products.forEach((p, pIdx) => {
+                    const unit = (p.name === '雲耳露') ? '瓶' : (p.name === '松阪豬肉') ? '片' : '包';
+                    let rowHtml = `<tr><td class="col-sticky-left"><div class="prod-info"><span class="prod-icon">${p.icon}</span><span class="prod-name">${p.name} <span style="font-weight:normal;">(${unit})</span></span></div></td>`;
+                    let monthTotal = 0;
+                    for (let w = 0; w < maxWeeks; w++) {
+                        monthTotal += weeklyTotals[pIdx][w];
+                        rowHtml += `<td>${weeklyTotals[pIdx][w]}</td>`; 
+                    }
+                    rowHtml += `<td class="col-total">${monthTotal}</td></tr>`; 
+                    tbodyHtml += rowHtml;
+                });
+                tbody.innerHTML = tbodyHtml;
+
+            } catch (error) {
+                console.error("Fetch error:", error);
+                tbody.innerHTML = `<tr><td colspan="10" style="padding: 20px; color: red; font-weight: bold;">❌ 讀取失敗，請檢查網路連線。</td></tr>`;
+            } finally {
+                setTimeout(() => { document.getElementById('loading-overlay').style.display = 'none'; }, 300);
+            }
         }
-
-        // 頁面初次載入執行
         renderStatsTable();
     </script>
 </body>
