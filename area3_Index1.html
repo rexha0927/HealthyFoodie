@@ -380,7 +380,7 @@
         function calculateAllSubtotals() {
             for (let pIdx = 0; pIdx < servingProducts.length; pIdx++) {
                 let currentStock = document.getElementById(`stock_0_${pIdx}`).value;
-                currentStock = currentStock === '' ? 0 : parseInt(currentStock, 10);
+                currentStock = currentStock === '' ? 0 : parseFloat(currentStock);
                 
                 for (let dIdx = 0; dIdx < 7; dIdx++) {
                     // Update current day's stock from previous day's calculated remain
@@ -388,7 +388,7 @@
                         const prevRemain = document.getElementById(`remain_${dIdx - 1}_${pIdx}`).innerText;
                         if (prevRemain !== '') {
                             document.getElementById(`stock_${dIdx}_${pIdx}`).value = prevRemain;
-                            currentStock = parseInt(prevRemain, 10);
+                            currentStock = parseFloat(prevRemain);
                         } else {
                             document.getElementById(`stock_${dIdx}_${pIdx}`).value = '';
                             currentStock = 0;
@@ -404,12 +404,14 @@
                     const hasInput = stockValStr !== '' || inValStr !== '' || mUseStr !== '' || aUseStr !== '';
                     
                     if (hasInput) {
-                        const s = parseInt(stockValStr) || 0;
-                        const i = parseInt(inValStr) || 0;
-                        const m = parseInt(mUseStr) || 0;
-                        const a = parseInt(aUseStr) || 0;
+                        const s = parseFloat(stockValStr) || 0;
+                        const i = parseFloat(inValStr) || 0;
+                        const m = parseFloat(mUseStr) || 0;
+                        const a = parseFloat(aUseStr) || 0;
+
+                        let calcResult = s + i - m - a;
+                        currentStock = parseFloat(calcResult.toFixed(1));
                         
-                        currentStock = s + i - m - a;
                         document.getElementById(`remain_${dIdx}_${pIdx}`).innerText = currentStock;
                     } else {
                         document.getElementById(`remain_${dIdx}_${pIdx}`).innerText = '';
